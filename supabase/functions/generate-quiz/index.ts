@@ -1,7 +1,6 @@
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.57.2";
-import { GoogleGenAI } from "npm:@google/genai@0.21.0";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -51,9 +50,6 @@ serve(async (req) => {
       throw new Error('Gemini API key not configured');
     }
 
-    // Initialize Google Gemini AI
-    const genAI = new GoogleGenAI(geminiApiKey);
-
     // Create quiz in database first
     const { data: quiz, error: quizError } = await supabaseClient
       .from('Quizzes')
@@ -100,53 +96,71 @@ Regras:
 
     console.log('Calling Gemini API with prompt length:', geminiPrompt.length);
 
+    const geminiResponse = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent?key=${geminiApiKey}`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          contents: [
+            {
+              parts: [
+                {
+                  text: geminiPrompt,
+                },
+              ],
+            },
+          ],
+          generationConfig: {
+            temperature: 0.7,
+            topK: 40,
+            topP: 0.95,
+            maxOutputTokens: 2048,
+          },
+        }),
+      }
+    );
+
+    if (!geminiResponse.ok) {
+      const errorText = await geminiResponse.text();
+      console.error('Gemini API error response:', errorText);
+      throw new Error(`Gemini API error: ${geminiResponse.status} - ${errorText}`);
+    }
+
+    const geminiData = await geminiResponse.json();
+    console.log('Gemini response:', JSON.stringify(geminiData, null, 2));
+
+    if (!geminiData.candidates || !geminiData.candidates[0] || !geminiData.candidates[0].content) {
+      throw new Error('Invalid response structure from Gemini API');
+    }
+
+    const generatedText = geminiData.candidates[0].content.parts[0].text;
+    console.log('Generated text:', generatedText);
+    
+    // Clean and extract JSON from the response
+    let jsonText = generatedText.trim();
+    
+    // Remove any markdown formatting if present
+    if (jsonText.startsWith('```json')) {
+      jsonText = jsonText.replace(/^```json\s*/, '').replace(/\s*```$/, '');
+    } else if (jsonText.startsWith('```')) {
+      jsonText = jsonText.replace(/^```\s*/, '').replace(/\s*```$/, '');
+    }
+    
+    // Try to find JSON in the text
+    const jsonMatch = jsonText.match(/\{[\s\S]*\}/);
+    if (!jsonMatch) {
+      throw new Error(`Could not extract valid JSON from Gemini response. Raw text: ${generatedText}`);
+    }
+
+    let questionsData;
     try {
-      // Get the model
-      const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash-exp" });
-
-      // Generate content
-      const result = await model.generateContent({
-        contents: [{
-          parts: [{ text: geminiPrompt }]
-        }],
-        generationConfig: {
-          temperature: 0.7,
-          topK: 40,
-          topP: 0.95,
-          maxOutputTokens: 2048,
-        }
-      });
-
-      const response = await result.response;
-      const generatedText = response.text();
-      console.log('Generated text:', generatedText);
-      
-      // Clean and extract JSON from the response
-      let jsonText = generatedText.trim();
-      
-      // Remove any markdown formatting if present
-      if (jsonText.startsWith('```json')) {
-        jsonText = jsonText.replace(/^```json\s*/, '').replace(/\s*```$/, '');
-      } else if (jsonText.startsWith('```')) {
-        jsonText = jsonText.replace(/^```\s*/, '').replace(/\s*```$/, '');
-      }
-      
-      // Try to find JSON in the text
-      const jsonMatch = jsonText.match(/\{[\s\S]*\}/);
-      if (!jsonMatch) {
-        throw new Error(`Could not extract valid JSON from Gemini response. Raw text: ${generatedText}`);
-      }
-
-      let questionsData;
-      try {
-        questionsData = JSON.parse(jsonMatch[0]);
-      } catch (parseError) {
-        console.error('JSON parse error:', parseError);
-        throw new Error(`Failed to parse JSON from Gemini response: ${parseError.message}`);
-      }
-    } catch (error) {
-      console.error('Error calling Gemini API:', error);
-      throw new Error(`Failed to generate quiz content: ${error.message}`);
+      questionsData = JSON.parse(jsonMatch[0]);
+    } catch (parseError) {
+      console.error('JSON parse error:', parseError);
+      throw new Error(`Failed to parse JSON from Gemini response: ${parseError.message}`);
     }
     
     console.log('Parsed questions:', questionsData);
