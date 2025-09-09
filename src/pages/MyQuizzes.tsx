@@ -37,7 +37,7 @@ export default function MyQuizzes() {
       const { data, error } = await supabase
         .from('Quizzes')
         .select('*')
-        .eq('status', 'ativo')
+        .eq('status', 'active')
         .order('created_at', { ascending: false });
 
       if (error) {
@@ -76,7 +76,7 @@ export default function MyQuizzes() {
     try {
       const { error } = await supabase
         .from('Quizzes')
-        .update({ status: 'inativo' })
+        .update({ status: 'inactive' })
         .eq('quiz_id', quizId);
 
       if (error) {
