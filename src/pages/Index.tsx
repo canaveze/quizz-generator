@@ -1,3 +1,4 @@
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
@@ -85,7 +86,7 @@ export default function Index() {
                 <span className="text-primary font-bold text-lg">2</span>
               </div>
               <h3 className="font-semibold">IA gera as perguntas</h3>
-              <p className="text-sm text-muted-foregreen">
+              <p className="text-sm text-muted-foreground">
                 Nossa IA cria perguntas personalizadas automaticamente
               </p>
             </div>
