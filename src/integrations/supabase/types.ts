@@ -93,6 +93,7 @@ export type Database = {
           objective: string | null
           prompt: string | null
           quiz_id: number
+          status: string
           total_questions: number | null
           user_id: number | null
         }
@@ -102,6 +103,7 @@ export type Database = {
           objective?: string | null
           prompt?: string | null
           quiz_id?: number
+          status?: string
           total_questions?: number | null
           user_id?: number | null
         }
@@ -111,6 +113,7 @@ export type Database = {
           objective?: string | null
           prompt?: string | null
           quiz_id?: number
+          status?: string
           total_questions?: number | null
           user_id?: number | null
         }

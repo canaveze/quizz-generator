@@ -71,35 +71,37 @@ serve(async (req) => {
     console.log('Quiz created:', quiz);
 
     // Generate questions using Gemini API
-    const geminiPrompt = `Crie ${totalQuestions} perguntas de múltipla escolha sobre: ${prompt}
+    const geminiPrompt = `Crie exatamente ${totalQuestions} perguntas de múltipla escolha sobre o tema: "${prompt}"
 
-Objetivo: ${objective}
+Objetivo do quiz: ${objective}
 
-Para cada pergunta, forneça:
-1. A pergunta
-2. 4 opções de resposta (A, B, C, D)
-3. Indique qual é a resposta correta
+IMPORTANTE: Responda APENAS com um JSON válido no seguinte formato:
 
-Formato de resposta esperado (JSON):
 {
   "questions": [
     {
-      "question": "Pergunta aqui?",
+      "question": "Qual é a pergunta?",
       "options": ["Opção A", "Opção B", "Opção C", "Opção D"],
       "correct": 0
     }
   ]
 }
 
-Onde "correct" é o índice da resposta correta (0, 1, 2 ou 3).`;
+Regras:
+- Crie exatamente ${totalQuestions} perguntas
+- Cada pergunta deve ter exatamente 4 opções
+- "correct" deve ser o índice da resposta correta (0, 1, 2 ou 3)
+- Use apenas texto em português
+- Não adicione texto extra fora do JSON`;
+
+    console.log('Calling Gemini API with prompt length:', geminiPrompt.length);
 
     const geminiResponse = await fetch(
-      'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent',
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent?key=${geminiApiKey}`,
       {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'X-goog-api-key': geminiApiKey,
         },
         body: JSON.stringify({
           contents: [
@@ -111,27 +113,62 @@ Onde "correct" é o índice da resposta correta (0, 1, 2 ou 3).`;
               ],
             },
           ],
+          generationConfig: {
+            temperature: 0.7,
+            topK: 40,
+            topP: 0.95,
+            maxOutputTokens: 2048,
+          },
         }),
       }
     );
 
     if (!geminiResponse.ok) {
-      throw new Error(`Gemini API error: ${geminiResponse.statusText}`);
+      const errorText = await geminiResponse.text();
+      console.error('Gemini API error response:', errorText);
+      throw new Error(`Gemini API error: ${geminiResponse.status} - ${errorText}`);
     }
 
     const geminiData = await geminiResponse.json();
-    console.log('Gemini response:', geminiData);
+    console.log('Gemini response:', JSON.stringify(geminiData, null, 2));
 
-    const generatedText = geminiData.candidates[0].content.parts[0].text;
-    
-    // Extract JSON from the response
-    const jsonMatch = generatedText.match(/\{[\s\S]*\}/);
-    if (!jsonMatch) {
-      throw new Error('Could not extract JSON from Gemini response');
+    if (!geminiData.candidates || !geminiData.candidates[0] || !geminiData.candidates[0].content) {
+      throw new Error('Invalid response structure from Gemini API');
     }
 
-    const questionsData = JSON.parse(jsonMatch[0]);
+    const generatedText = geminiData.candidates[0].content.parts[0].text;
+    console.log('Generated text:', generatedText);
+    
+    // Clean and extract JSON from the response
+    let jsonText = generatedText.trim();
+    
+    // Remove any markdown formatting if present
+    if (jsonText.startsWith('```json')) {
+      jsonText = jsonText.replace(/^```json\s*/, '').replace(/\s*```$/, '');
+    } else if (jsonText.startsWith('```')) {
+      jsonText = jsonText.replace(/^```\s*/, '').replace(/\s*```$/, '');
+    }
+    
+    // Try to find JSON in the text
+    const jsonMatch = jsonText.match(/\{[\s\S]*\}/);
+    if (!jsonMatch) {
+      throw new Error(`Could not extract valid JSON from Gemini response. Raw text: ${generatedText}`);
+    }
+
+    let questionsData;
+    try {
+      questionsData = JSON.parse(jsonMatch[0]);
+    } catch (parseError) {
+      console.error('JSON parse error:', parseError);
+      throw new Error(`Failed to parse JSON from Gemini response: ${parseError.message}`);
+    }
+    
     console.log('Parsed questions:', questionsData);
+
+    // Validate the response structure
+    if (!questionsData.questions || !Array.isArray(questionsData.questions)) {
+      throw new Error('Invalid questions structure in Gemini response');
+    }
 
     // Insert questions and answers into database
     for (let i = 0; i < questionsData.questions.length; i++) {

@@ -5,7 +5,18 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { toast } from '@/components/ui/use-toast';
 import { supabase } from '@/integrations/supabase/client';
-import { Loader2, Play, Plus } from 'lucide-react';
+import { Loader2, Play, Plus, Trash2 } from 'lucide-react';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
 
 interface Quiz {
   quiz_id: number;
@@ -58,6 +69,34 @@ export default function MyQuizzes() {
 
   const handlePlayQuiz = (quizId: number) => {
     navigate(`/quiz/${quizId}`);
+  };
+
+  const handleDeleteQuiz = async (quizId: number, quizName: string) => {
+    try {
+      const { error } = await supabase
+        .from('Quizzes')
+        .update({ status: 'deleted' })
+        .eq('quiz_id', quizId);
+
+      if (error) {
+        throw error;
+      }
+
+      toast({
+        title: "Quiz removido",
+        description: `O quiz "${quizName}" foi removido com sucesso.`,
+      });
+
+      // Refresh the quizzes list
+      fetchQuizzes();
+    } catch (error: any) {
+      console.error('Error deleting quiz:', error);
+      toast({
+        title: "Erro ao remover quiz",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
   };
 
   if (isLoading) {
@@ -113,13 +152,40 @@ export default function MyQuizzes() {
                     <span>{quiz.total_questions} perguntas</span>
                     <span>{new Date(quiz.created_at).toLocaleDateString()}</span>
                   </div>
-                  <Button 
-                    className="w-full" 
-                    onClick={() => handlePlayQuiz(quiz.quiz_id)}
-                  >
-                    <Play className="mr-2 h-4 w-4" />
-                    Jogar
-                  </Button>
+                  <div className="flex gap-2">
+                    <Button 
+                      className="flex-1" 
+                      onClick={() => handlePlayQuiz(quiz.quiz_id)}
+                    >
+                      <Play className="mr-2 h-4 w-4" />
+                      Jogar
+                    </Button>
+                    <AlertDialog>
+                      <AlertDialogTrigger asChild>
+                        <Button variant="outline" size="icon" className="text-destructive hover:text-destructive">
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </AlertDialogTrigger>
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>Remover Quiz</AlertDialogTitle>
+                          <AlertDialogDescription>
+                            Tem certeza que deseja remover o quiz "{quiz.name}"? 
+                            Esta ação não pode ser desfeita.
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                          <AlertDialogAction 
+                            onClick={() => handleDeleteQuiz(quiz.quiz_id, quiz.name)}
+                            className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                          >
+                            Remover
+                          </AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
+                  </div>
                 </CardContent>
               </Card>
             ))}
