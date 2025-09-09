@@ -178,7 +178,7 @@ Regras:
       const { data: question, error: questionError } = await supabaseClient
         .from('Questions')
         .insert({
-          quiz_id: quiz.quiz_id.toString(),
+          quiz_id: quiz.quiz_id,
           question_text: questionData.question,
         })
         .select()
