@@ -35,10 +35,10 @@ serve(async (req) => {
       .from('profiles')
       .select('user_legacy_id')
       .eq('id', user.id)
-      .single();
+      .maybeSingle();
 
-    if (!profile) {
-      throw new Error('User profile not found');
+    if (!profile || !profile.user_legacy_id) {
+      throw new Error('User profile not found or user_legacy_id is null');
     }
 
     const { name, objective, prompt, totalQuestions } = await req.json();
@@ -97,7 +97,7 @@ Regras:
     console.log('Calling Gemini API with prompt length:', geminiPrompt.length);
 
     const geminiResponse = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent?key=${geminiApiKey}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${geminiApiKey}`,
       {
         method: 'POST',
         headers: {
