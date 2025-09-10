@@ -121,7 +121,7 @@ Regras:
             temperature: 0.7,
             topK: 40,
             topP: 0.95,
-            maxOutputTokens: 2048,
+            maxOutputTokens: 4096,
           },
         }),
       }
@@ -144,6 +144,12 @@ Regras:
       throw new Error('Invalid response structure from Gemini API');
     }
 
+    // Check if response was truncated
+    if (geminiData.candidates[0].finishReason === 'MAX_TOKENS') {
+      console.error('Gemini response was truncated due to token limit');
+      throw new Error('Resposta do Gemini foi cortada devido ao limite de tokens. Tente reduzir o número de perguntas.');
+    }
+
     const generatedText = geminiData.candidates[0].content.parts[0].text;
     console.log('Generated text:', generatedText);
     
@@ -163,9 +169,16 @@ Regras:
       throw new Error(`Could not extract valid JSON from Gemini response. Raw text: ${generatedText}`);
     }
 
+    // Validate that JSON is complete by checking if it ends properly
+    const jsonString = jsonMatch[0];
+    if (!jsonString.trim().endsWith('}')) {
+      console.error('JSON appears to be incomplete:', jsonString);
+      throw new Error('Resposta incompleta do Gemini. Tente novamente com menos perguntas.');
+    }
+
     let questionsData;
     try {
-      questionsData = JSON.parse(jsonMatch[0]);
+      questionsData = JSON.parse(jsonString);
     } catch (parseError) {
       console.error('JSON parse error:', parseError);
       throw new Error(`Failed to parse JSON from Gemini response: ${parseError.message}`);
