@@ -8,6 +8,8 @@ const corsHeaders = {
 };
 
 serve(async (req) => {
+  console.log('generate-quiz function called', { method: req.method, url: req.url });
+  
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
@@ -46,7 +48,9 @@ serve(async (req) => {
     console.log('Generating quiz with Gemini API for:', { name, objective, totalQuestions });
 
     const geminiApiKey = Deno.env.get('GEMINI_API_KEY');
+    console.log('Gemini API key present:', !!geminiApiKey);
     if (!geminiApiKey) {
+      console.error('GEMINI_API_KEY not found in environment variables');
       throw new Error('Gemini API key not configured');
     }
 
@@ -125,7 +129,11 @@ Regras:
 
     if (!geminiResponse.ok) {
       const errorText = await geminiResponse.text();
-      console.error('Gemini API error response:', errorText);
+      console.error('Gemini API error response:', {
+        status: geminiResponse.status,
+        statusText: geminiResponse.statusText,
+        errorText: errorText
+      });
       throw new Error(`Gemini API error: ${geminiResponse.status} - ${errorText}`);
     }
 
