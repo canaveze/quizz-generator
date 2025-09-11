@@ -4,6 +4,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Plus, BookOpen } from "lucide-react";
+import { SplashCursor } from "@/components/ui/splash-cursor";
 
 export default function Index() {
   const navigate = useNavigate();
@@ -15,7 +16,8 @@ export default function Index() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary/5 to-secondary/5 p-4">
+    <div className="min-h-screen bg-gradient-to-br from-primary/5 to-secondary/5 p-4 relative">
+      <SplashCursor />
       <div className="max-w-4xl mx-auto">
         <div className="flex justify-between items-center mb-8">
           <div>
