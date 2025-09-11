@@ -10,6 +10,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { toast } from '@/components/ui/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { Loader2 } from 'lucide-react';
+import { SplashCursor } from '@/components/ui/splash-cursor';
+import { Spotlight } from '@/components/ui/spotlight';
 
 export default function CreateQuiz() {
   const [isLoading, setIsLoading] = useState(false);
@@ -68,7 +70,8 @@ export default function CreateQuiz() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary/5 to-secondary/5 p-4">
+    <div className="min-h-screen bg-gradient-to-br from-primary/5 to-secondary/5 p-4 relative">
+      <SplashCursor />
       <div className="max-w-2xl mx-auto">
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-3xl font-bold">Criar QUIZ</h1>
@@ -82,7 +85,8 @@ export default function CreateQuiz() {
           </div>
         </div>
 
-        <Card>
+        <Card className="relative bg-background/80 backdrop-blur-sm border-border/50 overflow-hidden">
+          <Spotlight className="from-primary/30 via-primary/20 to-transparent" size={200} />
           <CardHeader>
             <CardTitle>Novo Quiz</CardTitle>
           </CardHeader>

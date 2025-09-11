@@ -6,6 +6,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { toast } from '@/components/ui/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { Loader2, Play, Plus, Trash2 } from 'lucide-react';
+import { SplashCursor } from '@/components/ui/splash-cursor';
+import { Spotlight } from '@/components/ui/spotlight';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -109,7 +111,8 @@ export default function MyQuizzes() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary/5 to-secondary/5 p-4">
+    <div className="min-h-screen bg-gradient-to-br from-primary/5 to-secondary/5 p-4 relative">
+      <SplashCursor />
       <div className="max-w-4xl mx-auto">
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-3xl font-bold">Meus Quiz</h1>
@@ -125,7 +128,8 @@ export default function MyQuizzes() {
         </div>
 
         {quizzes.length === 0 ? (
-          <Card className="text-center py-12">
+          <Card className="relative text-center py-12 bg-background/80 backdrop-blur-sm border-border/50 overflow-hidden">
+            <Spotlight className="from-primary/30 via-primary/20 to-transparent" size={200} />
             <CardContent>
               <h2 className="text-xl font-semibold mb-2">Nenhum quiz criado ainda</h2>
               <p className="text-muted-foreground mb-4">
@@ -140,7 +144,8 @@ export default function MyQuizzes() {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {quizzes.map((quiz) => (
-              <Card key={quiz.quiz_id} className="hover:shadow-lg transition-shadow">
+              <Card key={quiz.quiz_id} className="relative hover:shadow-lg transition-shadow bg-background/80 backdrop-blur-sm border-border/50 overflow-hidden">
+                <Spotlight className="from-primary/30 via-primary/20 to-transparent" size={150} />
                 <CardHeader>
                   <CardTitle className="text-lg">{quiz.name}</CardTitle>
                 </CardHeader>
