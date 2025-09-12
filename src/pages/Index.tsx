@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Plus, BookOpen } from "lucide-react";
 import { SplashCursor } from "@/components/ui/splash-cursor";
-import { Spotlight } from "@/components/ui/spotlight";
 
 export default function Index() {
   const navigate = useNavigate();
@@ -33,8 +32,7 @@ export default function Index() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <Card className="relative hover:shadow-lg transition-shadow cursor-pointer bg-background/80 backdrop-blur-sm border-border/50 overflow-hidden" onClick={() => navigate('/create-quiz')}>
-            <Spotlight className="from-primary/30 via-primary/20 to-transparent" size={200} />
+          <Card className="hover:shadow-lg transition-shadow cursor-pointer bg-background/80 backdrop-blur-sm border-border/50" onClick={() => navigate('/create-quiz')}>
             <CardHeader>
               <div className="flex items-center gap-3">
                 <Plus className="h-8 w-8 text-primary" />
@@ -53,8 +51,7 @@ export default function Index() {
             </CardContent>
           </Card>
 
-          <Card className="relative hover:shadow-lg transition-shadow cursor-pointer bg-background/80 backdrop-blur-sm border-border/50 overflow-hidden" onClick={() => navigate('/my-quizzes')}>
-            <Spotlight className="from-secondary/30 via-secondary/20 to-transparent" size={200} />
+          <Card className="hover:shadow-lg transition-shadow cursor-pointer bg-background/80 backdrop-blur-sm border-border/50" onClick={() => navigate('/my-quizzes')}>
             <CardHeader>
               <div className="flex items-center gap-3">
                 <BookOpen className="h-8 w-8 text-secondary" />

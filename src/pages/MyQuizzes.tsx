@@ -7,7 +7,6 @@ import { toast } from '@/components/ui/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { Loader2, Play, Plus, Trash2 } from 'lucide-react';
 import { SplashCursor } from '@/components/ui/splash-cursor';
-import { Spotlight } from '@/components/ui/spotlight';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -128,8 +127,7 @@ export default function MyQuizzes() {
         </div>
 
         {quizzes.length === 0 ? (
-          <Card className="relative text-center py-12 bg-background/80 backdrop-blur-sm border-border/50 overflow-hidden">
-            <Spotlight className="from-primary/30 via-primary/20 to-transparent" size={200} />
+          <Card className="text-center py-12 bg-background/80 backdrop-blur-sm border-border/50">
             <CardContent>
               <h2 className="text-xl font-semibold mb-2">Nenhum quiz criado ainda</h2>
               <p className="text-muted-foreground mb-4">
@@ -144,8 +142,7 @@ export default function MyQuizzes() {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {quizzes.map((quiz) => (
-              <Card key={quiz.quiz_id} className="relative hover:shadow-lg transition-shadow bg-background/80 backdrop-blur-sm border-border/50 overflow-hidden">
-                <Spotlight className="from-primary/30 via-primary/20 to-transparent" size={150} />
+              <Card key={quiz.quiz_id} className="hover:shadow-lg transition-shadow bg-background/80 backdrop-blur-sm border-border/50">
                 <CardHeader>
                   <CardTitle className="text-lg">{quiz.name}</CardTitle>
                 </CardHeader>

@@ -8,7 +8,6 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { toast } from '@/components/ui/use-toast';
 import { SplashCursor } from '@/components/ui/splash-cursor';
-import { Spotlight } from '@/components/ui/spotlight';
 
 export default function Auth() {
   const [isLoading, setIsLoading] = useState(false);
@@ -101,8 +100,7 @@ export default function Auth() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/5 to-secondary/5 p-4 relative">
       <SplashCursor />
-      <Card className="relative w-full max-w-md bg-background/80 backdrop-blur-sm border-border/50 overflow-hidden">
-        <Spotlight className="from-primary/30 via-primary/20 to-transparent" size={250} />
+      <Card className="w-full max-w-md bg-background/80 backdrop-blur-sm border-border/50">{/* ... keep existing code */}
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl text-center">Quiz Platform</CardTitle>
           <CardDescription className="text-center">

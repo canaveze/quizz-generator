@@ -10,7 +10,6 @@ import { toast } from '@/components/ui/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { Loader2, CheckCircle, XCircle } from 'lucide-react';
 import { SplashCursor } from '@/components/ui/splash-cursor';
-import { Spotlight } from '@/components/ui/spotlight';
 
 interface Question {
   question_id: number;
@@ -183,8 +182,7 @@ export default function QuizPlay() {
     return (
       <div className="min-h-screen flex items-center justify-center relative">
         <SplashCursor />
-        <Card className="relative text-center bg-background/80 backdrop-blur-sm border-border/50 overflow-hidden">
-          <Spotlight className="from-primary/30 via-primary/20 to-transparent" size={200} />
+        <Card className="text-center bg-background/80 backdrop-blur-sm border-border/50">
           <CardContent className="pt-6">
             <p>Quiz não encontrado ou sem perguntas.</p>
             <Button onClick={() => navigate('/my-quizzes')} className="mt-4">
@@ -203,8 +201,7 @@ export default function QuizPlay() {
       <div className="min-h-screen bg-gradient-to-br from-primary/5 to-secondary/5 p-4 relative">
         <SplashCursor />
         <div className="max-w-2xl mx-auto">
-          <Card className="relative bg-background/80 backdrop-blur-sm border-border/50 overflow-hidden">
-            <Spotlight className="from-primary/30 via-primary/20 to-transparent" size={300} />
+          <Card className="bg-background/80 backdrop-blur-sm border-border/50">
             <CardHeader className="text-center">
               <CardTitle className="text-2xl">Quiz Finalizado!</CardTitle>
             </CardHeader>
@@ -221,8 +218,7 @@ export default function QuizPlay() {
               <div className="space-y-4">
                 <h3 className="text-lg font-semibold">Respostas:</h3>
                 {results.map((result, index) => (
-                  <Card key={index} className="relative p-4 bg-background/60 backdrop-blur-sm border-border/40 overflow-hidden">
-                    <Spotlight className="from-primary/20 via-primary/10 to-transparent" size={120} />
+                  <Card key={index} className="p-4 bg-background/60 backdrop-blur-sm border-border/40">
                     <div className="flex items-start gap-3">
                       {result.isCorrect ? (
                         <CheckCircle className="h-5 w-5 text-green-500 mt-1 flex-shrink-0" />
@@ -288,8 +284,7 @@ export default function QuizPlay() {
           <Progress value={progress} className="w-full" />
         </div>
 
-        <Card className="relative bg-background/80 backdrop-blur-sm border-border/50 overflow-hidden">
-          <Spotlight className="from-primary/30 via-primary/20 to-transparent" size={250} />
+        <Card className="bg-background/80 backdrop-blur-sm border-border/50">
           <CardHeader>
             <CardTitle className="text-lg">{currentQuestion.question_text}</CardTitle>
           </CardHeader>

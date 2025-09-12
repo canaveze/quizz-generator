@@ -11,7 +11,6 @@ import { toast } from '@/components/ui/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { Loader2 } from 'lucide-react';
 import { SplashCursor } from '@/components/ui/splash-cursor';
-import { Spotlight } from '@/components/ui/spotlight';
 
 export default function CreateQuiz() {
   const [isLoading, setIsLoading] = useState(false);
@@ -85,8 +84,7 @@ export default function CreateQuiz() {
           </div>
         </div>
 
-        <Card className="relative bg-background/80 backdrop-blur-sm border-border/50 overflow-hidden">
-          <Spotlight className="from-primary/30 via-primary/20 to-transparent" size={200} />
+        <Card className="bg-background/80 backdrop-blur-sm border-border/50">
           <CardHeader>
             <CardTitle>Novo Quiz</CardTitle>
           </CardHeader>
