@@ -8,18 +8,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { Loader2, Play, Plus, Trash2 } from 'lucide-react';
 import { SplashCursor } from '@/components/ui/splash-cursor';
 import { AppHeader } from '@/components/AppHeader';
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from '@/components/ui/alert-dialog';
-
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 interface Quiz {
   quiz_id: number;
   name: string;
@@ -27,63 +16,57 @@ interface Quiz {
   total_questions: number;
   created_at: string;
 }
-
 export default function MyQuizzes() {
   const [quizzes, setQuizzes] = useState<Quiz[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const { user } = useAuth();
+  const {
+    user
+  } = useAuth();
   const navigate = useNavigate();
-
   const fetchQuizzes = async () => {
     try {
-      const { data, error } = await supabase
-        .from('Quizzes')
-        .select('*')
-        .eq('status', 'active')
-        .order('created_at', { ascending: false });
-
+      const {
+        data,
+        error
+      } = await supabase.from('Quizzes').select('*').eq('status', 'active').order('created_at', {
+        ascending: false
+      });
       if (error) {
         throw error;
       }
-
       setQuizzes(data || []);
     } catch (error: any) {
       console.error('Error fetching quizzes:', error);
       toast({
         title: "Erro ao carregar quizzes",
         description: error.message,
-        variant: "destructive",
+        variant: "destructive"
       });
     } finally {
       setIsLoading(false);
     }
   };
-
   useEffect(() => {
     if (user) {
       fetchQuizzes();
     }
   }, [user]);
-
-
   const handlePlayQuiz = (quizId: number) => {
     navigate(`/quiz/${quizId}`);
   };
-
   const handleDeleteQuiz = async (quizId: number, quizName: string) => {
     try {
-      const { error } = await supabase
-        .from('Quizzes')
-        .update({ status: 'inactive' })
-        .eq('quiz_id', quizId);
-
+      const {
+        error
+      } = await supabase.from('Quizzes').update({
+        status: 'inactive'
+      }).eq('quiz_id', quizId);
       if (error) {
         throw error;
       }
-
       toast({
         title: "Quiz removido",
-        description: `O quiz "${quizName}" foi removido com sucesso.`,
+        description: `O quiz "${quizName}" foi removido com sucesso.`
       });
 
       // Refresh the quizzes list
@@ -93,33 +76,24 @@ export default function MyQuizzes() {
       toast({
         title: "Erro ao remover quiz",
         description: error.message,
-        variant: "destructive",
+        variant: "destructive"
       });
     }
   };
-
   if (isLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
+    return <div className="min-h-screen flex items-center justify-center">
         <Loader2 className="h-8 w-8 animate-spin" />
-      </div>
-    );
+      </div>;
   }
-
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-primary/10 to-secondary/10 relative">
+  return <div className="min-h-screen bg-gradient-to-br from-primary/10 to-secondary/10 relative">
       <SplashCursor />
       <AppHeader title="Meus Quizzes" />
       <div className="max-w-4xl mx-auto p-6">
         <div className="flex justify-end mb-6">
-          <Button onClick={() => navigate('/create-quiz')}>
-            <Plus className="mr-2 h-4 w-4" />
-            Criar Novo Quiz
-          </Button>
+          
         </div>
 
-        {quizzes.length === 0 ? (
-          <Card className="text-center py-12 bg-background/80 backdrop-blur-sm border-border/50">
+        {quizzes.length === 0 ? <Card className="text-center py-12 bg-background/80 backdrop-blur-sm border-border/50">
             <CardContent>
               <h2 className="text-xl font-semibold mb-2">Nenhum quiz criado ainda</h2>
               <p className="text-muted-foreground mb-4">
@@ -130,11 +104,8 @@ export default function MyQuizzes() {
                 Criar Primeiro Quiz
               </Button>
             </CardContent>
-          </Card>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {quizzes.map((quiz) => (
-              <Card key={quiz.quiz_id} className="hover:shadow-lg transition-shadow bg-background/80 backdrop-blur-sm border-border/50">
+          </Card> : <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {quizzes.map(quiz => <Card key={quiz.quiz_id} className="hover:shadow-lg transition-shadow bg-background/80 backdrop-blur-sm border-border/50">
                 <CardHeader>
                   <CardTitle className="text-lg">{quiz.name}</CardTitle>
                 </CardHeader>
@@ -148,10 +119,7 @@ export default function MyQuizzes() {
                     <span>{new Date(quiz.created_at).toLocaleDateString()}</span>
                   </div>
                   <div className="flex gap-2">
-                    <Button 
-                      className="flex-1" 
-                      onClick={() => handlePlayQuiz(quiz.quiz_id)}
-                    >
+                    <Button className="flex-1" onClick={() => handlePlayQuiz(quiz.quiz_id)}>
                       <Play className="mr-2 h-4 w-4" />
                       Jogar
                     </Button>
@@ -171,10 +139,7 @@ export default function MyQuizzes() {
                         </AlertDialogHeader>
                         <AlertDialogFooter>
                           <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                          <AlertDialogAction 
-                            onClick={() => handleDeleteQuiz(quiz.quiz_id, quiz.name)}
-                            className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-                          >
+                          <AlertDialogAction onClick={() => handleDeleteQuiz(quiz.quiz_id, quiz.name)} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
                             Remover
                           </AlertDialogAction>
                         </AlertDialogFooter>
@@ -182,11 +147,8 @@ export default function MyQuizzes() {
                     </AlertDialog>
                   </div>
                 </CardContent>
-              </Card>
-            ))}
-          </div>
-        )}
+              </Card>)}
+          </div>}
       </div>
-    </div>
-  );
+    </div>;
 }
