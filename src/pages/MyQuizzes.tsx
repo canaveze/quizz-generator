@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { toast } from '@/components/ui/use-toast';
@@ -19,9 +20,8 @@ interface Quiz {
 export default function MyQuizzes() {
   const [quizzes, setQuizzes] = useState<Quiz[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const {
-    user
-  } = useAuth();
+  const { user } = useAuth();
+  const { t } = useLanguage();
   const navigate = useNavigate();
   const fetchQuizzes = async () => {
     try {
@@ -85,9 +85,9 @@ export default function MyQuizzes() {
         <Loader2 className="h-8 w-8 animate-spin" />
       </div>;
   }
-  return <div className="min-h-screen bg-gradient-to-br from-primary/10 to-secondary/10 relative">
+  return <div className="min-h-screen bg-gradient-to-br from-[hsl(var(--fala-orange))]/10 to-[hsl(var(--fala-navy-light))]/10 relative">
       <SplashCursor />
-      <AppHeader title="Meus Quizzes" />
+      <AppHeader title={t('page.myQuizzes')} />
       <div className="max-w-4xl mx-auto p-6">
         <div className="flex justify-end mb-6">
           
@@ -95,13 +95,13 @@ export default function MyQuizzes() {
 
         {quizzes.length === 0 ? <Card className="text-center py-12 bg-background/80 backdrop-blur-sm border-border/50">
             <CardContent>
-              <h2 className="text-xl font-semibold mb-2">Nenhum quiz criado ainda</h2>
+              <h2 className="text-xl font-semibold mb-2">{t('myQuizzes.noQuizzes')}</h2>
               <p className="text-muted-foreground mb-4">
-                Comece criando seu primeiro quiz!
+                {t('myQuizzes.createFirst')}
               </p>
               <Button onClick={() => navigate('/create-quiz')}>
                 <Plus className="mr-2 h-4 w-4" />
-                Criar Primeiro Quiz
+                {t('myQuizzes.createFirst')}
               </Button>
             </CardContent>
           </Card> : <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -121,7 +121,7 @@ export default function MyQuizzes() {
                   <div className="flex gap-2">
                     <Button className="flex-1" onClick={() => handlePlayQuiz(quiz.quiz_id)}>
                       <Play className="mr-2 h-4 w-4" />
-                      Jogar
+                      {t('myQuizzes.play')}
                     </Button>
                     <AlertDialog>
                       <AlertDialogTrigger asChild>

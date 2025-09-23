@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
@@ -41,6 +42,7 @@ export default function QuizPlay() {
   const [isLoading, setIsLoading] = useState(true);
   const [isFinished, setIsFinished] = useState(false);
   const { user } = useAuth();
+  const { t } = useLanguage();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -175,6 +177,7 @@ export default function QuizPlay() {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <Loader2 className="h-8 w-8 animate-spin" />
+        <span className="ml-2">{t('common.loading')}</span>
       </div>
     );
   }
@@ -199,20 +202,20 @@ export default function QuizPlay() {
     const correctAnswers = results.filter(r => r.isCorrect).length;
     
     return (
-      <div className="min-h-screen bg-gradient-to-br from-primary/10 to-secondary/10 p-4 relative">
+      <div className="min-h-screen bg-gradient-to-br from-[hsl(var(--fala-orange))]/10 to-[hsl(var(--fala-navy-light))]/10 p-4 relative">
         <SplashCursor />
         <div className="max-w-2xl mx-auto">
           <Card className="bg-background/80 backdrop-blur-sm border-border/50">
             <CardHeader className="text-center">
-              <CardTitle className="text-2xl">Quiz Finalizado!</CardTitle>
+              <CardTitle className="text-2xl">{t('quiz.results')}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="text-center">
                 <div className="text-4xl font-bold mb-2">
-                  {correctAnswers} / {questions.length}
+                  {correctAnswers} {t('quiz.of')} {questions.length}
                 </div>
                 <p className="text-lg text-muted-foreground">
-                  Você acertou {Math.round((correctAnswers / questions.length) * 100)}% das perguntas
+                  {t('quiz.score')}: {Math.round((correctAnswers / questions.length) * 100)}%
                 </p>
               </div>
 
@@ -272,9 +275,9 @@ export default function QuizPlay() {
   const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary/10 to-secondary/10 relative">
+    <div className="min-h-screen bg-gradient-to-br from-[hsl(var(--fala-orange))]/10 to-[hsl(var(--fala-navy-light))]/10 relative">
       <SplashCursor />
-      <AppHeader title={quiz?.name || 'Quiz'} />
+      <AppHeader title={quiz?.name || t('page.playQuiz')} />
       <div className="max-w-2xl mx-auto p-6">
         <div className="flex items-center gap-4 mb-6">
           <Button variant="outline" onClick={() => navigate('/my-quizzes')}>
@@ -284,7 +287,7 @@ export default function QuizPlay() {
         <div className="mb-6">
           <div className="flex justify-between items-center mb-2">
             <span className="text-sm text-muted-foreground">
-              {currentQuestionIndex + 1} / {questions.length}
+              {t('quiz.question')} {currentQuestionIndex + 1} {t('quiz.of')} {questions.length}
             </span>
           </div>
           <Progress value={progress} className="w-full" />
@@ -321,7 +324,7 @@ export default function QuizPlay() {
                 disabled={!selectedAnswerId}
                 className="min-w-24"
               >
-                {currentQuestionIndex < questions.length - 1 ? 'Próxima' : 'Finalizar'}
+                {currentQuestionIndex < questions.length - 1 ? t('quiz.next') : t('quiz.finish')}
               </Button>
             </div>
           </CardContent>

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -16,6 +17,7 @@ import { AppHeader } from '@/components/AppHeader';
 export default function CreateQuiz() {
   const [isLoading, setIsLoading] = useState(false);
   const { user } = useAuth();
+  const { t } = useLanguage();
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -45,17 +47,17 @@ export default function CreateQuiz() {
 
       if (data.success) {
         toast({
-          title: "Quiz criado com sucesso!",
+          title: t('common.success'),
           description: "Redirecionando para seus quizzes...",
         });
         navigate('/my-quizzes');
       } else {
-        throw new Error(data.error || 'Erro ao criar quiz');
+        throw new Error(data.error || t('createQuiz.error'));
       }
     } catch (error: any) {
       console.error('Error creating quiz:', error);
       toast({
-        title: "Erro ao criar quiz",
+        title: t('createQuiz.error'),
         description: error.message || 'Tente novamente mais tarde.',
         variant: "destructive",
       });
@@ -65,9 +67,9 @@ export default function CreateQuiz() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary/10 to-secondary/10 relative">
+    <div className="min-h-screen bg-gradient-to-br from-[hsl(var(--fala-orange))]/10 to-[hsl(var(--fala-navy-light))]/10 relative">
       <SplashCursor />
-      <AppHeader title="Criar Quiz" />
+      <AppHeader title={t('page.createQuiz')} />
       <div className="max-w-2xl mx-auto p-6">
         <div className="flex items-center gap-4 mb-6">
           <Button variant="outline" onClick={() => navigate(-1)}>
@@ -77,7 +79,7 @@ export default function CreateQuiz() {
 
         <Card className="bg-background/80 backdrop-blur-sm border-border/50">
           <CardHeader>
-            <CardTitle>Novo Quiz</CardTitle>
+            <CardTitle>{t('createQuiz.title')}</CardTitle>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -137,10 +139,10 @@ export default function CreateQuiz() {
                 {isLoading ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Gerando Quiz...
+                    {t('createQuiz.generating')}
                   </>
                 ) : (
-                  'Gerar Quiz'
+                  t('createQuiz.generate')
                 )}
               </Button>
             </form>
