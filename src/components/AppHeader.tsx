@@ -1,8 +1,10 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
+import { LanguageToggle } from '@/components/ui/language-toggle';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -26,6 +28,7 @@ interface AppHeaderProps {
 
 export function AppHeader({ title }: AppHeaderProps) {
   const { user, signOut } = useAuth();
+  const { t } = useLanguage();
   const navigate = useNavigate();
 
   const handleSignOut = async () => {
@@ -50,7 +53,10 @@ export function AppHeader({ title }: AppHeaderProps) {
       <div className="container flex h-16 max-w-screen-2xl items-center justify-between px-4">
         <h1 className="text-2xl font-bold text-primary">{title}</h1>
         
-        <DropdownMenu>
+        <div className="flex items-center gap-4">
+          <LanguageToggle />
+          
+          <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="flex items-center gap-2 h-auto p-2">
               <Avatar className="h-8 w-8">
@@ -82,39 +88,40 @@ export function AppHeader({ title }: AppHeaderProps) {
             
             <DropdownMenuItem onClick={() => navigate('/')}>
               <Home className="mr-2 h-4 w-4" />
-              Início
+              {t('header.home')}
             </DropdownMenuItem>
             
             <DropdownMenuItem onClick={() => navigate('/create-quiz')}>
               <Plus className="mr-2 h-4 w-4" />
-              Criar Quiz
+              {t('header.createQuiz')}
             </DropdownMenuItem>
             
             <DropdownMenuItem onClick={() => navigate('/my-quizzes')}>
               <FileText className="mr-2 h-4 w-4" />
-              Meus Quizzes
+              {t('header.myQuizzes')}
             </DropdownMenuItem>
             
             <DropdownMenuSeparator />
             
             <DropdownMenuItem>
               <Camera className="mr-2 h-4 w-4" />
-              Alterar Foto
+              {t('header.changePhoto')}
             </DropdownMenuItem>
             
             <DropdownMenuItem>
               <User className="mr-2 h-4 w-4" />
-              Perfil
+              {t('header.profile')}
             </DropdownMenuItem>
             
             <DropdownMenuSeparator />
             
             <DropdownMenuItem onClick={handleSignOut} className="text-destructive">
               <LogOut className="mr-2 h-4 w-4" />
-              Sair
+              {t('header.logout')}
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
+        </div>
       </div>
     </header>
   );
