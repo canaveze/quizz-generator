@@ -198,7 +198,7 @@ export default function QuizPlay() {
     const correctAnswers = results.filter(r => r.isCorrect).length;
     
     return (
-      <div className="min-h-screen bg-gradient-to-br from-primary/5 to-secondary/5 p-4 relative">
+      <div className="min-h-screen bg-gradient-to-br from-primary/10 to-secondary/10 p-4 relative">
         <SplashCursor />
         <div className="max-w-2xl mx-auto">
           <Card className="bg-background/80 backdrop-blur-sm border-border/50">
@@ -271,12 +271,12 @@ export default function QuizPlay() {
   const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary/5 to-secondary/5 p-4 relative">
+    <div className="min-h-screen bg-gradient-to-br from-primary/10 to-secondary/10 p-4 relative">
       <SplashCursor />
       <div className="max-w-2xl mx-auto">
         <div className="mb-6">
           <div className="flex justify-between items-center mb-2">
-            <h1 className="text-2xl font-bold">{quiz.name}</h1>
+            <h1 className="text-2xl font-bold text-primary">{quiz.name}</h1>
             <span className="text-sm text-muted-foreground">
               {currentQuestionIndex + 1} / {questions.length}
             </span>

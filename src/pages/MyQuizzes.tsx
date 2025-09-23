@@ -110,11 +110,11 @@ export default function MyQuizzes() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary/5 to-secondary/5 p-4 relative">
+    <div className="min-h-screen bg-gradient-to-br from-primary/10 to-secondary/10 p-4 relative">
       <SplashCursor />
       <div className="max-w-4xl mx-auto">
         <div className="flex justify-between items-center mb-6">
-          <h1 className="text-3xl font-bold">Meus Quiz</h1>
+          <h1 className="text-3xl font-bold text-primary">Meus Quiz</h1>
           <div className="flex gap-2">
             <Button onClick={() => navigate('/create-quiz')}>
               <Plus className="mr-2 h-4 w-4" />

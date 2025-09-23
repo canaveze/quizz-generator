@@ -98,11 +98,11 @@ export default function Auth() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/5 to-secondary/5 p-4 relative">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/10 to-secondary/10 p-4 relative">
       <SplashCursor />
       <Card className="w-full max-w-md bg-background/80 backdrop-blur-sm border-border/50">{/* ... keep existing code */}
         <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl text-center">Quiz Platform</CardTitle>
+          <CardTitle className="text-2xl text-center text-primary">FALA Education Quiz</CardTitle>
           <CardDescription className="text-center">
             Entre em sua conta ou crie uma nova
           </CardDescription>

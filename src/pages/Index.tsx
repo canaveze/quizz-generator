@@ -16,12 +16,12 @@ export default function Index() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary/5 to-secondary/5 p-4 relative">
+    <div className="min-h-screen bg-gradient-to-br from-primary/10 to-secondary/10 p-4 relative">
       <SplashCursor />
       <div className="max-w-4xl mx-auto">
         <div className="flex justify-between items-center mb-8">
           <div>
-            <h1 className="text-4xl font-bold mb-2">Quiz Platform</h1>
+            <h1 className="text-4xl font-bold mb-2 text-primary">FALA Education Quiz</h1>
             <p className="text-xl text-muted-foreground">
               Bem-vindo, {user?.email}!
             </p>
