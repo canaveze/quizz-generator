@@ -9,12 +9,13 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { toast } from '@/components/ui/use-toast';
 import { supabase } from '@/integrations/supabase/client';
-import { Loader2 } from 'lucide-react';
+import { Loader2, ArrowLeft } from 'lucide-react';
 import { SplashCursor } from '@/components/ui/splash-cursor';
+import { AppHeader } from '@/components/AppHeader';
 
 export default function CreateQuiz() {
   const [isLoading, setIsLoading] = useState(false);
-  const { user, signOut } = useAuth();
+  const { user } = useAuth();
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -63,25 +64,15 @@ export default function CreateQuiz() {
     }
   };
 
-  const handleSignOut = async () => {
-    await signOut();
-    navigate('/auth');
-  };
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary/10 to-secondary/10 p-4 relative">
+    <div className="min-h-screen bg-gradient-to-br from-primary/10 to-secondary/10 relative">
       <SplashCursor />
-      <div className="max-w-2xl mx-auto">
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-3xl font-bold text-primary">Criar Quiz</h1>
-          <div className="flex gap-2">
-            <Button variant="outline" onClick={() => navigate('/my-quizzes')}>
-              Meus Quiz
-            </Button>
-            <Button variant="ghost" onClick={handleSignOut}>
-              Sair
-            </Button>
-          </div>
+      <AppHeader title="Criar Quiz" />
+      <div className="max-w-2xl mx-auto p-6">
+        <div className="flex items-center gap-4 mb-6">
+          <Button variant="outline" onClick={() => navigate(-1)}>
+            <ArrowLeft className="h-4 w-4" />
+          </Button>
         </div>
 
         <Card className="bg-background/80 backdrop-blur-sm border-border/50">

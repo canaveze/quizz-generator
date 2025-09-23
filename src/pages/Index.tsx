@@ -5,30 +5,21 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Plus, BookOpen } from "lucide-react";
 import { SplashCursor } from "@/components/ui/splash-cursor";
+import { AppHeader } from "@/components/AppHeader";
 
 export default function Index() {
   const navigate = useNavigate();
-  const { user, signOut } = useAuth();
-
-  const handleSignOut = async () => {
-    await signOut();
-    navigate('/auth');
-  };
+  const { user } = useAuth();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary/10 to-secondary/10 p-4 relative">
+    <div className="min-h-screen bg-gradient-to-br from-primary/10 to-secondary/10 relative">
       <SplashCursor />
-      <div className="max-w-4xl mx-auto">
-        <div className="flex justify-between items-center mb-8">
-          <div>
-            <h1 className="text-4xl font-bold mb-2 text-primary">FALA Education Quiz</h1>
-            <p className="text-xl text-muted-foreground">
-              Bem-vindo, {user?.email}!
-            </p>
-          </div>
-          <Button variant="ghost" onClick={handleSignOut}>
-            Sair
-          </Button>
+      <AppHeader title="FALA Education Quiz" />
+      <div className="max-w-4xl mx-auto p-6">
+        <div className="mb-8">
+          <p className="text-xl text-muted-foreground">
+            Bem-vindo, {user?.user_metadata?.name || user?.email}!
+          </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

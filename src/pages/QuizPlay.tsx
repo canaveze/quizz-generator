@@ -8,8 +8,9 @@ import { Label } from '@/components/ui/label';
 import { Progress } from '@/components/ui/progress';
 import { toast } from '@/components/ui/use-toast';
 import { supabase } from '@/integrations/supabase/client';
-import { Loader2, CheckCircle, XCircle } from 'lucide-react';
+import { Loader2, CheckCircle, XCircle, ArrowLeft } from 'lucide-react';
 import { SplashCursor } from '@/components/ui/splash-cursor';
+import { AppHeader } from '@/components/AppHeader';
 
 interface Question {
   question_id: number;
@@ -271,12 +272,17 @@ export default function QuizPlay() {
   const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary/10 to-secondary/10 p-4 relative">
+    <div className="min-h-screen bg-gradient-to-br from-primary/10 to-secondary/10 relative">
       <SplashCursor />
-      <div className="max-w-2xl mx-auto">
+      <AppHeader title={quiz?.name || 'Quiz'} />
+      <div className="max-w-2xl mx-auto p-6">
+        <div className="flex items-center gap-4 mb-6">
+          <Button variant="outline" onClick={() => navigate('/my-quizzes')}>
+            <ArrowLeft className="h-4 w-4" />
+          </Button>
+        </div>
         <div className="mb-6">
           <div className="flex justify-between items-center mb-2">
-            <h1 className="text-2xl font-bold text-primary">{quiz.name}</h1>
             <span className="text-sm text-muted-foreground">
               {currentQuestionIndex + 1} / {questions.length}
             </span>

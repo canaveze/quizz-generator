@@ -7,6 +7,7 @@ import { toast } from '@/components/ui/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { Loader2, Play, Plus, Trash2 } from 'lucide-react';
 import { SplashCursor } from '@/components/ui/splash-cursor';
+import { AppHeader } from '@/components/AppHeader';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -30,7 +31,7 @@ interface Quiz {
 export default function MyQuizzes() {
   const [quizzes, setQuizzes] = useState<Quiz[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const { user, signOut } = useAuth();
+  const { user } = useAuth();
   const navigate = useNavigate();
 
   const fetchQuizzes = async () => {
@@ -64,10 +65,6 @@ export default function MyQuizzes() {
     }
   }, [user]);
 
-  const handleSignOut = async () => {
-    await signOut();
-    navigate('/auth');
-  };
 
   const handlePlayQuiz = (quizId: number) => {
     navigate(`/quiz/${quizId}`);
@@ -110,20 +107,15 @@ export default function MyQuizzes() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary/10 to-secondary/10 p-4 relative">
+    <div className="min-h-screen bg-gradient-to-br from-primary/10 to-secondary/10 relative">
       <SplashCursor />
-      <div className="max-w-4xl mx-auto">
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-3xl font-bold text-primary">Meus Quiz</h1>
-          <div className="flex gap-2">
-            <Button onClick={() => navigate('/create-quiz')}>
-              <Plus className="mr-2 h-4 w-4" />
-              Criar Novo Quiz
-            </Button>
-            <Button variant="ghost" onClick={handleSignOut}>
-              Sair
-            </Button>
-          </div>
+      <AppHeader title="Meus Quizzes" />
+      <div className="max-w-4xl mx-auto p-6">
+        <div className="flex justify-end mb-6">
+          <Button onClick={() => navigate('/create-quiz')}>
+            <Plus className="mr-2 h-4 w-4" />
+            Criar Novo Quiz
+          </Button>
         </div>
 
         {quizzes.length === 0 ? (
