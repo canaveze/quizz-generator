@@ -29,14 +29,14 @@ export default function Index() {
                 <Plus className="h-8 w-8 text-primary" />
                 <div>
                   <CardTitle>{t('home.createQuiz.title')}</CardTitle>
-                  <CardDescription>
+                  <CardDescription className="text-foreground/85">
                     {t('home.createQuiz.description')}
                   </CardDescription>
                 </div>
               </div>
             </CardHeader>
             <CardContent>
-              <p className="text-sm text-foreground/70">
+              <p className="text-sm text-foreground/85">
                 {t('home.createQuiz.content')}
               </p>
             </CardContent>
@@ -48,14 +48,14 @@ export default function Index() {
                 <BookOpen className="h-8 w-8 text-secondary" />
                 <div>
                   <CardTitle>{t('home.myQuizzes.title')}</CardTitle>
-                  <CardDescription>
+                  <CardDescription className="text-foreground/85">
                     {t('home.myQuizzes.description')}
                   </CardDescription>
                 </div>
               </div>
             </CardHeader>
             <CardContent>
-              <p className="text-sm text-foreground/70">
+              <p className="text-sm text-foreground/85">
                 {t('home.myQuizzes.content')}
               </p>
             </CardContent>
@@ -70,7 +70,7 @@ export default function Index() {
                 <span className="text-primary font-bold text-lg">1</span>
               </div>
               <h3 className="font-semibold">{t('home.step1.title')}</h3>
-              <p className="text-sm text-foreground/70">
+              <p className="text-sm text-foreground/85">
                 {t('home.step1.description')}
               </p>
             </div>
@@ -79,7 +79,7 @@ export default function Index() {
                 <span className="text-primary font-bold text-lg">2</span>
               </div>
               <h3 className="font-semibold">{t('home.step2.title')}</h3>
-              <p className="text-sm text-foreground/70">
+              <p className="text-sm text-foreground/85">
                 {t('home.step2.description')}
               </p>
             </div>
@@ -88,7 +88,7 @@ export default function Index() {
                 <span className="text-primary font-bold text-lg">3</span>
               </div>
               <h3 className="font-semibold">{t('home.step3.title')}</h3>
-              <p className="text-sm text-foreground/70">
+              <p className="text-sm text-foreground/85">
                 {t('home.step3.description')}
               </p>
             </div>
