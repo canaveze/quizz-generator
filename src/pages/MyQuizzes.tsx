@@ -103,7 +103,7 @@ export default function MyQuizzes() {
       <div className="max-w-4xl mx-auto p-6">
         {quizzes.length > 0 && (
           <div className="mb-6 relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-foreground/85" />
             <Input
               type="text"
               placeholder={t('myQuizzes.searchPlaceholder')}
@@ -117,7 +117,7 @@ export default function MyQuizzes() {
         {quizzes.length === 0 ? <Card className="text-center py-12 bg-background/80 backdrop-blur-sm border-border/50">
             <CardContent>
               <h2 className="text-xl font-semibold mb-2">{t('myQuizzes.noQuizzes')}</h2>
-              <p className="text-muted-foreground mb-4">
+              <p className="text-foreground/85 mb-4">
                 {t('myQuizzes.createFirst')}
               </p>
               <Button onClick={() => navigate('/create-quiz')}>
@@ -128,7 +128,7 @@ export default function MyQuizzes() {
           </Card> : filteredQuizzes.length === 0 ? <Card className="text-center py-12 bg-background/80 backdrop-blur-sm border-border/50">
             <CardContent>
               <h2 className="text-xl font-semibold mb-2">{t('myQuizzes.noResults')}</h2>
-              <p className="text-muted-foreground">
+              <p className="text-foreground/85">
                 {t('myQuizzes.noResultsDescription')}
               </p>
             </CardContent>
@@ -139,10 +139,10 @@ export default function MyQuizzes() {
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div>
-                    <p className="text-sm text-muted-foreground mb-1">{t('myQuizzes.objective')}</p>
+                    <p className="text-sm text-foreground/85 mb-1">{t('myQuizzes.objective')}</p>
                     <p className="text-sm">{quiz.objective}</p>
                   </div>
-                  <div className="flex justify-between text-sm text-muted-foreground">
+                  <div className="flex justify-between text-sm text-foreground/85">
                     <span>{quiz.total_questions} {t('myQuizzes.questions')}</span>
                     <span>{new Date(quiz.created_at).toLocaleDateString()}</span>
                   </div>
