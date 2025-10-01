@@ -5,7 +5,6 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Plus, BookOpen } from "lucide-react";
-import { SplashCursor } from "@/components/ui/splash-cursor";
 import { AppHeader } from "@/components/AppHeader";
 
 export default function Index() {
@@ -15,12 +14,11 @@ export default function Index() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[hsl(var(--fala-orange))]/10 to-[hsl(var(--fala-navy-light))]/10 relative">
-      <SplashCursor />
       <AppHeader title={t('page.home')} />
       <div className="max-w-4xl mx-auto p-6">
         <div className="mb-8">
-          <p className="text-xl text-muted-foreground">
-            {t('home.welcome')}
+          <p className="text-xl text-foreground/80">
+            {t('home.welcome')}, {user?.user_metadata?.name || user?.email}!
           </p>
         </div>
 
@@ -38,7 +36,7 @@ export default function Index() {
               </div>
             </CardHeader>
             <CardContent>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-foreground/70">
                 {t('home.createQuiz.content')}
               </p>
             </CardContent>
@@ -57,7 +55,7 @@ export default function Index() {
               </div>
             </CardHeader>
             <CardContent>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-foreground/70">
                 {t('home.myQuizzes.content')}
               </p>
             </CardContent>
@@ -72,7 +70,7 @@ export default function Index() {
                 <span className="text-primary font-bold text-lg">1</span>
               </div>
               <h3 className="font-semibold">{t('home.step1.title')}</h3>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-foreground/70">
                 {t('home.step1.description')}
               </p>
             </div>
@@ -81,7 +79,7 @@ export default function Index() {
                 <span className="text-primary font-bold text-lg">2</span>
               </div>
               <h3 className="font-semibold">{t('home.step2.title')}</h3>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-foreground/70">
                 {t('home.step2.description')}
               </p>
             </div>
@@ -90,7 +88,7 @@ export default function Index() {
                 <span className="text-primary font-bold text-lg">3</span>
               </div>
               <h3 className="font-semibold">{t('home.step3.title')}</h3>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-foreground/70">
                 {t('home.step3.description')}
               </p>
             </div>
