@@ -1,6 +1,5 @@
 import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
-import { SplashCursor } from "@/components/ui/splash-cursor";
 
 const NotFound = () => {
   const location = useLocation();
@@ -11,7 +10,6 @@ const NotFound = () => {
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-primary/5 to-secondary/5 relative">
-      <SplashCursor />
       <div className="text-center bg-background/80 backdrop-blur-sm border border-border/50 rounded-lg p-8">
         <h1 className="mb-4 text-4xl font-bold">404</h1>
         <p className="mb-4 text-xl text-muted-foreground">Oops! Page not found</p>

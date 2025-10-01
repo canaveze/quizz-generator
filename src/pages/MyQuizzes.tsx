@@ -7,7 +7,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { toast } from '@/components/ui/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { Loader2, Play, Plus, Trash2 } from 'lucide-react';
-import { SplashCursor } from '@/components/ui/splash-cursor';
 import { AppHeader } from '@/components/AppHeader';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 interface Quiz {
@@ -86,7 +85,6 @@ export default function MyQuizzes() {
       </div>;
   }
   return <div className="min-h-screen bg-gradient-to-br from-[hsl(var(--fala-orange))]/10 to-[hsl(var(--fala-navy-light))]/10 relative">
-      <SplashCursor />
       <AppHeader title={t('page.myQuizzes')} />
       <div className="max-w-4xl mx-auto p-6">
         <div className="flex justify-end mb-6">

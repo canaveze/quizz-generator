@@ -11,7 +11,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { toast } from '@/components/ui/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { Loader2, ArrowLeft } from 'lucide-react';
-import { SplashCursor } from '@/components/ui/splash-cursor';
 import { AppHeader } from '@/components/AppHeader';
 
 export default function CreateQuiz() {
@@ -68,7 +67,6 @@ export default function CreateQuiz() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[hsl(var(--fala-orange))]/10 to-[hsl(var(--fala-navy-light))]/10 relative">
-      <SplashCursor />
       <AppHeader title={t('page.createQuiz')} />
       <div className="max-w-2xl mx-auto p-6">
         <div className="flex items-center gap-4 mb-6">
