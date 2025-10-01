@@ -17,7 +17,7 @@ export default function Index() {
       <AppHeader title={t('page.home')} />
       <div className="max-w-4xl mx-auto p-6">
         <div className="mb-8">
-          <p className="text-xl text-muted-foreground">
+          <p className="text-xl text-foreground/80">
             {t('home.welcome')}, {user?.user_metadata?.name || user?.email}!
           </p>
         </div>
@@ -36,7 +36,7 @@ export default function Index() {
               </div>
             </CardHeader>
             <CardContent>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-foreground/70">
                 {t('home.createQuiz.content')}
               </p>
             </CardContent>
@@ -55,7 +55,7 @@ export default function Index() {
               </div>
             </CardHeader>
             <CardContent>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-foreground/70">
                 {t('home.myQuizzes.content')}
               </p>
             </CardContent>
@@ -70,7 +70,7 @@ export default function Index() {
                 <span className="text-primary font-bold text-lg">1</span>
               </div>
               <h3 className="font-semibold">{t('home.step1.title')}</h3>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-foreground/70">
                 {t('home.step1.description')}
               </p>
             </div>
@@ -79,7 +79,7 @@ export default function Index() {
                 <span className="text-primary font-bold text-lg">2</span>
               </div>
               <h3 className="font-semibold">{t('home.step2.title')}</h3>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-foreground/70">
                 {t('home.step2.description')}
               </p>
             </div>
@@ -88,7 +88,7 @@ export default function Index() {
                 <span className="text-primary font-bold text-lg">3</span>
               </div>
               <h3 className="font-semibold">{t('home.step3.title')}</h3>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-foreground/70">
                 {t('home.step3.description')}
               </p>
             </div>
