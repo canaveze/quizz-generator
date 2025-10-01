@@ -13,7 +13,7 @@ export function LanguageToggle({
   const isPortuguese = language === 'pt';
   
   return (
-    <div className={cn("flex items-center gap-2 p-1 bg-muted rounded-lg", className)}>
+    <div className={cn("flex items-center gap-2 p-1 bg-muted/30 rounded-lg", className)}>
       <button
         onClick={() => setLanguage('pt')}
         className={cn(
