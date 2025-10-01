@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { toast } from '@/components/ui/use-toast';
 import { supabase } from '@/integrations/supabase/client';
-import { Loader2, Play, Plus, Trash2 } from 'lucide-react';
+import { Loader2, Play, Plus, Trash2, Search } from 'lucide-react';
 import { AppHeader } from '@/components/AppHeader';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 interface Quiz {
@@ -19,9 +20,22 @@ interface Quiz {
 export default function MyQuizzes() {
   const [quizzes, setQuizzes] = useState<Quiz[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState('');
   const { user } = useAuth();
   const { t } = useLanguage();
   const navigate = useNavigate();
+
+  const filteredQuizzes = useMemo(() => {
+    if (!searchQuery.trim()) {
+      return quizzes;
+    }
+    
+    const query = searchQuery.toLowerCase();
+    return quizzes.filter(quiz => 
+      quiz.name.toLowerCase().includes(query) || 
+      quiz.objective.toLowerCase().includes(query)
+    );
+  }, [quizzes, searchQuery]);
   const fetchQuizzes = async () => {
     try {
       const {
@@ -87,9 +101,18 @@ export default function MyQuizzes() {
   return <div className="min-h-screen bg-gradient-to-br from-[hsl(var(--fala-orange))]/10 to-[hsl(var(--fala-navy-light))]/10 relative">
       <AppHeader title={t('page.myQuizzes')} />
       <div className="max-w-4xl mx-auto p-6">
-        <div className="flex justify-end mb-6">
-          
-        </div>
+        {quizzes.length > 0 && (
+          <div className="mb-6 relative">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Input
+              type="text"
+              placeholder={t('myQuizzes.searchPlaceholder')}
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-10 bg-background/80 backdrop-blur-sm"
+            />
+          </div>
+        )}
 
         {quizzes.length === 0 ? <Card className="text-center py-12 bg-background/80 backdrop-blur-sm border-border/50">
             <CardContent>
@@ -102,8 +125,15 @@ export default function MyQuizzes() {
                 {t('myQuizzes.createFirst')}
               </Button>
             </CardContent>
+          </Card> : filteredQuizzes.length === 0 ? <Card className="text-center py-12 bg-background/80 backdrop-blur-sm border-border/50">
+            <CardContent>
+              <h2 className="text-xl font-semibold mb-2">{t('myQuizzes.noResults')}</h2>
+              <p className="text-muted-foreground">
+                {t('myQuizzes.noResultsDescription')}
+              </p>
+            </CardContent>
           </Card> : <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {quizzes.map(quiz => <Card key={quiz.quiz_id} className="hover:shadow-lg transition-shadow bg-background/80 backdrop-blur-sm border-border/50">
+            {filteredQuizzes.map(quiz => <Card key={quiz.quiz_id} className="hover:shadow-lg transition-shadow bg-background/80 backdrop-blur-sm border-border/50">
                 <CardHeader>
                   <CardTitle className="text-lg">{quiz.name}</CardTitle>
                 </CardHeader>

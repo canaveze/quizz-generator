@@ -78,6 +78,9 @@ const translations = {
     'myQuizzes.deleteSuccessDescription': 'O quiz "{name}" foi removido com sucesso.',
     'myQuizzes.loadError': 'Erro ao carregar quizzes',
     'myQuizzes.deleteError': 'Erro ao remover quiz',
+    'myQuizzes.searchPlaceholder': 'Buscar quizzes por nome ou objetivo...',
+    'myQuizzes.noResults': 'Nenhum quiz encontrado',
+    'myQuizzes.noResultsDescription': 'Tente ajustar sua busca',
     
     'createQuiz.successDescription': 'Redirecionando para seus quizzes...',
     'createQuiz.errorDescription': 'Tente novamente mais tarde.',
@@ -180,6 +183,9 @@ const translations = {
     'myQuizzes.deleteSuccessDescription': 'The quiz "{name}" was successfully deleted.',
     'myQuizzes.loadError': 'Error loading quizzes',
     'myQuizzes.deleteError': 'Error deleting quiz',
+    'myQuizzes.searchPlaceholder': 'Search quizzes by name or objective...',
+    'myQuizzes.noResults': 'No quizzes found',
+    'myQuizzes.noResultsDescription': 'Try adjusting your search',
     
     'createQuiz.successDescription': 'Redirecting to your quizzes...',
     'createQuiz.errorDescription': 'Please try again later.',
