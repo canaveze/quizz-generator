@@ -37,7 +37,7 @@ export default function MyQuizzes() {
     } catch (error: any) {
       console.error('Error fetching quizzes:', error);
       toast({
-        title: "Erro ao carregar quizzes",
+        title: t('myQuizzes.loadError'),
         description: error.message,
         variant: "destructive"
       });
@@ -64,8 +64,8 @@ export default function MyQuizzes() {
         throw error;
       }
       toast({
-        title: "Quiz removido",
-        description: `O quiz "${quizName}" foi removido com sucesso.`
+        title: t('myQuizzes.deleteSuccess'),
+        description: t('myQuizzes.deleteSuccessDescription').replace('{name}', quizName)
       });
 
       // Refresh the quizzes list
@@ -73,7 +73,7 @@ export default function MyQuizzes() {
     } catch (error: any) {
       console.error('Error deleting quiz:', error);
       toast({
-        title: "Erro ao remover quiz",
+        title: t('myQuizzes.deleteError'),
         description: error.message,
         variant: "destructive"
       });
@@ -109,11 +109,11 @@ export default function MyQuizzes() {
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div>
-                    <p className="text-sm text-muted-foreground mb-1">Objetivo:</p>
+                    <p className="text-sm text-muted-foreground mb-1">{t('myQuizzes.objective')}</p>
                     <p className="text-sm">{quiz.objective}</p>
                   </div>
                   <div className="flex justify-between text-sm text-muted-foreground">
-                    <span>{quiz.total_questions} perguntas</span>
+                    <span>{quiz.total_questions} {t('myQuizzes.questions')}</span>
                     <span>{new Date(quiz.created_at).toLocaleDateString()}</span>
                   </div>
                   <div className="flex gap-2">
@@ -129,16 +129,15 @@ export default function MyQuizzes() {
                       </AlertDialogTrigger>
                       <AlertDialogContent>
                         <AlertDialogHeader>
-                          <AlertDialogTitle>Remover Quiz</AlertDialogTitle>
+                          <AlertDialogTitle>{t('myQuizzes.deleteDialog.title')}</AlertDialogTitle>
                           <AlertDialogDescription>
-                            Tem certeza que deseja remover o quiz "{quiz.name}"? 
-                            Esta ação não pode ser desfeita.
+                            {t('myQuizzes.deleteDialog.description').replace('{name}', quiz.name)}
                           </AlertDialogDescription>
                         </AlertDialogHeader>
                         <AlertDialogFooter>
-                          <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                          <AlertDialogCancel>{t('common.cancel')}</AlertDialogCancel>
                           <AlertDialogAction onClick={() => handleDeleteQuiz(quiz.quiz_id, quiz.name)} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
-                            Remover
+                            {t('myQuizzes.delete')}
                           </AlertDialogAction>
                         </AlertDialogFooter>
                       </AlertDialogContent>

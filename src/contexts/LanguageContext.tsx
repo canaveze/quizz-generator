@@ -69,6 +69,28 @@ const translations = {
     'myQuizzes.createFirst': 'Criar meu primeiro quiz',
     'myQuizzes.play': 'Jogar',
     'myQuizzes.createdAt': 'Criado em',
+    'myQuizzes.objective': 'Objetivo:',
+    'myQuizzes.questions': 'perguntas',
+    'myQuizzes.delete': 'Remover',
+    'myQuizzes.deleteDialog.title': 'Remover Quiz',
+    'myQuizzes.deleteDialog.description': 'Tem certeza que deseja remover o quiz "{name}"? Esta ação não pode ser desfeita.',
+    'myQuizzes.deleteSuccess': 'Quiz removido',
+    'myQuizzes.deleteSuccessDescription': 'O quiz "{name}" foi removido com sucesso.',
+    'myQuizzes.loadError': 'Erro ao carregar quizzes',
+    'myQuizzes.deleteError': 'Erro ao remover quiz',
+    
+    'createQuiz.successDescription': 'Redirecionando para seus quizzes...',
+    'createQuiz.errorDescription': 'Tente novamente mais tarde.',
+    
+    // Create Quiz page labels
+    'createQuiz.name': 'Nome do Quiz',
+    'createQuiz.namePlaceholder': 'Digite o nome do seu quiz',
+    'createQuiz.objective': 'Objetivo',
+    'createQuiz.objectivePlaceholder': 'Qual o objetivo deste quiz?',
+    'createQuiz.description': 'Descrição/Prompt',
+    'createQuiz.descriptionPlaceholder': 'Descreva sobre o que devem ser as perguntas do quiz...',
+    'createQuiz.numberOfQuestions': 'Quantidade de Perguntas',
+    'createQuiz.questionsCount': '{count} perguntas',
     
     // Quiz Play page
     'quiz.question': 'Pergunta',
@@ -149,6 +171,28 @@ const translations = {
     'myQuizzes.createFirst': 'Create my first quiz',
     'myQuizzes.play': 'Play',
     'myQuizzes.createdAt': 'Created at',
+    'myQuizzes.objective': 'Objective:',
+    'myQuizzes.questions': 'questions',
+    'myQuizzes.delete': 'Delete',
+    'myQuizzes.deleteDialog.title': 'Delete Quiz',
+    'myQuizzes.deleteDialog.description': 'Are you sure you want to delete the quiz "{name}"? This action cannot be undone.',
+    'myQuizzes.deleteSuccess': 'Quiz deleted',
+    'myQuizzes.deleteSuccessDescription': 'The quiz "{name}" was successfully deleted.',
+    'myQuizzes.loadError': 'Error loading quizzes',
+    'myQuizzes.deleteError': 'Error deleting quiz',
+    
+    'createQuiz.successDescription': 'Redirecting to your quizzes...',
+    'createQuiz.errorDescription': 'Please try again later.',
+    
+    // Create Quiz page labels
+    'createQuiz.name': 'Quiz Name',
+    'createQuiz.namePlaceholder': 'Enter your quiz name',
+    'createQuiz.objective': 'Objective',
+    'createQuiz.objectivePlaceholder': 'What is the objective of this quiz?',
+    'createQuiz.description': 'Description/Prompt',
+    'createQuiz.descriptionPlaceholder': 'Describe what the quiz questions should be about...',
+    'createQuiz.numberOfQuestions': 'Number of Questions',
+    'createQuiz.questionsCount': '{count} questions',
     
     // Quiz Play page
     'quiz.question': 'Question',

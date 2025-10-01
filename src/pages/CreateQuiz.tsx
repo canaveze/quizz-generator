@@ -47,7 +47,7 @@ export default function CreateQuiz() {
       if (data.success) {
         toast({
           title: t('common.success'),
-          description: "Redirecionando para seus quizzes...",
+          description: t('createQuiz.successDescription'),
         });
         navigate('/my-quizzes');
       } else {
@@ -57,7 +57,7 @@ export default function CreateQuiz() {
       console.error('Error creating quiz:', error);
       toast({
         title: t('createQuiz.error'),
-        description: error.message || 'Tente novamente mais tarde.',
+        description: error.message || t('createQuiz.errorDescription'),
         variant: "destructive",
       });
     } finally {
@@ -82,10 +82,10 @@ export default function CreateQuiz() {
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="name">Nome do Quiz</Label>
+                <Label htmlFor="name">{t('createQuiz.name')}</Label>
                 <Input
                   id="name"
-                  placeholder="Digite o nome do seu quiz"
+                  placeholder={t('createQuiz.namePlaceholder')}
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   required
@@ -93,10 +93,10 @@ export default function CreateQuiz() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="objective">Objetivo</Label>
+                <Label htmlFor="objective">{t('createQuiz.objective')}</Label>
                 <Input
                   id="objective"
-                  placeholder="Qual o objetivo deste quiz?"
+                  placeholder={t('createQuiz.objectivePlaceholder')}
                   value={formData.objective}
                   onChange={(e) => setFormData({ ...formData, objective: e.target.value })}
                   required
@@ -104,10 +104,10 @@ export default function CreateQuiz() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="prompt">Descrição/Prompt</Label>
+                <Label htmlFor="prompt">{t('createQuiz.description')}</Label>
                 <Textarea
                   id="prompt"
-                  placeholder="Descreva sobre o que devem ser as perguntas do quiz..."
+                  placeholder={t('createQuiz.descriptionPlaceholder')}
                   value={formData.prompt}
                   onChange={(e) => setFormData({ ...formData, prompt: e.target.value })}
                   rows={4}
@@ -116,7 +116,7 @@ export default function CreateQuiz() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="questions">Quantidade de Perguntas</Label>
+                <Label htmlFor="questions">{t('createQuiz.numberOfQuestions')}</Label>
                 <Select
                   value={formData.totalQuestions.toString()}
                   onValueChange={(value) => setFormData({ ...formData, totalQuestions: parseInt(value) })}
@@ -125,10 +125,10 @@ export default function CreateQuiz() {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="5">5 perguntas</SelectItem>
-                    <SelectItem value="10">10 perguntas</SelectItem>
-                    <SelectItem value="15">15 perguntas</SelectItem>
-                    <SelectItem value="20">20 perguntas</SelectItem>
+                    <SelectItem value="5">{t('createQuiz.questionsCount').replace('{count}', '5')}</SelectItem>
+                    <SelectItem value="10">{t('createQuiz.questionsCount').replace('{count}', '10')}</SelectItem>
+                    <SelectItem value="15">{t('createQuiz.questionsCount').replace('{count}', '15')}</SelectItem>
+                    <SelectItem value="20">{t('createQuiz.questionsCount').replace('{count}', '20')}</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
