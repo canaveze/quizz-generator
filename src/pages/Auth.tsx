@@ -8,101 +8,91 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { toast } from '@/components/ui/use-toast';
 import { SplashCursor } from '@/components/ui/splash-cursor';
-
 export default function Auth() {
   const [isLoading, setIsLoading] = useState(false);
-  const { signIn, signUp, resetPassword } = useAuth();
+  const {
+    signIn,
+    signUp,
+    resetPassword
+  } = useAuth();
   const navigate = useNavigate();
-
   const [loginData, setLoginData] = useState({
     email: '',
-    password: '',
+    password: ''
   });
-
   const [signupData, setSignupData] = useState({
     name: '',
     email: '',
-    password: '',
+    password: ''
   });
-
   const [resetEmail, setResetEmail] = useState('');
-
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-
-    const { error } = await signIn(loginData.email, loginData.password);
-
+    const {
+      error
+    } = await signIn(loginData.email, loginData.password);
     if (error) {
       toast({
         title: "Erro no login",
-        description: error.message === 'Invalid login credentials' 
-          ? 'Email ou senha incorretos' 
-          : error.message,
-        variant: "destructive",
+        description: error.message === 'Invalid login credentials' ? 'Email ou senha incorretos' : error.message,
+        variant: "destructive"
       });
     } else {
       toast({
         title: "Login realizado com sucesso!",
-        description: "Você será redirecionado...",
+        description: "Você será redirecionado..."
       });
       navigate('/');
     }
-
     setIsLoading(false);
   };
-
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-
-    const { error } = await signUp(signupData.email, signupData.password, signupData.name);
-
+    const {
+      error
+    } = await signUp(signupData.email, signupData.password, signupData.name);
     if (error) {
       toast({
         title: "Erro no cadastro",
         description: error.message,
-        variant: "destructive",
+        variant: "destructive"
       });
     } else {
       toast({
         title: "Cadastro realizado!",
-        description: "Verifique seu email para confirmar a conta.",
+        description: "Verifique seu email para confirmar a conta."
       });
     }
-
     setIsLoading(false);
   };
-
   const handleResetPassword = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-
-    const { error } = await resetPassword(resetEmail);
-
+    const {
+      error
+    } = await resetPassword(resetEmail);
     if (error) {
       toast({
         title: "Erro",
         description: error.message,
-        variant: "destructive",
+        variant: "destructive"
       });
     } else {
       toast({
         title: "Email enviado!",
-        description: "Verifique sua caixa de entrada para redefinir sua senha.",
+        description: "Verifique sua caixa de entrada para redefinir sua senha."
       });
       setResetEmail('');
     }
-
     setIsLoading(false);
   };
-
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/10 to-secondary/10 p-4 relative">
+  return <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/10 to-secondary/10 p-4 relative">
       <SplashCursor />
       <Card className="w-full max-w-md bg-background/80 backdrop-blur-sm border-border/50">{/* ... keep existing code */}
         <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl text-center text-primary">FALA Education Quiz</CardTitle>
+          <CardTitle className="text-2xl text-center text-primary">Quiz Generator</CardTitle>
           <CardDescription className="text-center">
             Entre em sua conta ou crie uma nova
           </CardDescription>
@@ -119,43 +109,32 @@ export default function Auth() {
               <CardContent className="space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="email">Email</Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    placeholder="seu@email.com"
-                    value={loginData.email}
-                    onChange={(e) => setLoginData({ ...loginData, email: e.target.value })}
-                    required
-                  />
+                  <Input id="email" type="email" placeholder="seu@email.com" value={loginData.email} onChange={e => setLoginData({
+                  ...loginData,
+                  email: e.target.value
+                })} required />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="password">Senha</Label>
-                  <Input
-                    id="password"
-                    type="password"
-                    placeholder="********"
-                    value={loginData.password}
-                    onChange={(e) => setLoginData({ ...loginData, password: e.target.value })}
-                    required
-                  />
+                  <Input id="password" type="password" placeholder="********" value={loginData.password} onChange={e => setLoginData({
+                  ...loginData,
+                  password: e.target.value
+                })} required />
                 </div>
               </CardContent>
               <CardFooter className="flex flex-col space-y-2">
                 <Button type="submit" className="w-full" disabled={isLoading}>
                   {isLoading ? 'Entrando...' : 'Entrar'}
                 </Button>
-                <Button
-                  type="button"
-                  variant="link"
-                  className="text-sm"
-                  onClick={() => {
-                    const email = prompt('Digite seu email:');
-                    if (email) {
-                      setResetEmail(email);
-                      handleResetPassword({ preventDefault: () => {} } as any);
-                    }
-                  }}
-                >
+                <Button type="button" variant="link" className="text-sm" onClick={() => {
+                const email = prompt('Digite seu email:');
+                if (email) {
+                  setResetEmail(email);
+                  handleResetPassword({
+                    preventDefault: () => {}
+                  } as any);
+                }
+              }}>
                   Esqueci minha senha
                 </Button>
               </CardFooter>
@@ -167,36 +146,24 @@ export default function Auth() {
               <CardContent className="space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="signup-name">Nome</Label>
-                  <Input
-                    id="signup-name"
-                    type="text"
-                    placeholder="Seu nome completo"
-                    value={signupData.name}
-                    onChange={(e) => setSignupData({ ...signupData, name: e.target.value })}
-                    required
-                  />
+                  <Input id="signup-name" type="text" placeholder="Seu nome completo" value={signupData.name} onChange={e => setSignupData({
+                  ...signupData,
+                  name: e.target.value
+                })} required />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="signup-email">Email</Label>
-                  <Input
-                    id="signup-email"
-                    type="email"
-                    placeholder="seu@email.com"
-                    value={signupData.email}
-                    onChange={(e) => setSignupData({ ...signupData, email: e.target.value })}
-                    required
-                  />
+                  <Input id="signup-email" type="email" placeholder="seu@email.com" value={signupData.email} onChange={e => setSignupData({
+                  ...signupData,
+                  email: e.target.value
+                })} required />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="signup-password">Senha</Label>
-                  <Input
-                    id="signup-password"
-                    type="password"
-                    placeholder="********"
-                    value={signupData.password}
-                    onChange={(e) => setSignupData({ ...signupData, password: e.target.value })}
-                    required
-                  />
+                  <Input id="signup-password" type="password" placeholder="********" value={signupData.password} onChange={e => setSignupData({
+                  ...signupData,
+                  password: e.target.value
+                })} required />
                 </div>
               </CardContent>
               <CardFooter>
@@ -208,6 +175,5 @@ export default function Auth() {
           </TabsContent>
         </Tabs>
       </Card>
-    </div>
-  );
+    </div>;
 }
