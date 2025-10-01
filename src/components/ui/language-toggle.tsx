@@ -11,5 +11,31 @@ export function LanguageToggle({
     setLanguage
   } = useLanguage();
   const isPortuguese = language === 'pt';
-  return;
+  
+  return (
+    <div className={cn("flex items-center gap-2 p-1 bg-muted rounded-lg", className)}>
+      <button
+        onClick={() => setLanguage('pt')}
+        className={cn(
+          "px-3 py-1.5 rounded-md text-sm font-medium transition-all",
+          isPortuguese
+            ? "bg-primary text-primary-foreground shadow-sm"
+            : "text-muted-foreground hover:text-foreground"
+        )}
+      >
+        🇧🇷
+      </button>
+      <button
+        onClick={() => setLanguage('en')}
+        className={cn(
+          "px-3 py-1.5 rounded-md text-sm font-medium transition-all",
+          !isPortuguese
+            ? "bg-primary text-primary-foreground shadow-sm"
+            : "text-muted-foreground hover:text-foreground"
+        )}
+      >
+        🇺🇸
+      </button>
+    </div>
+  );
 }

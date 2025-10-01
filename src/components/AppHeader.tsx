@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { useLanguage } from '@/contexts/LanguageContext';
+import falaLogo from '@/assets/FALA_logo.svg';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { LanguageToggle } from '@/components/ui/language-toggle';
@@ -51,7 +52,7 @@ export function AppHeader({ title }: AppHeaderProps) {
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 max-w-screen-2xl items-center justify-between px-4">
-        <h1 className="text-2xl font-bold text-primary">{title}</h1>
+        <img src={falaLogo} alt="FALA Education" className="h-10" />
         
         <div className="flex items-center gap-4">
           <LanguageToggle />
