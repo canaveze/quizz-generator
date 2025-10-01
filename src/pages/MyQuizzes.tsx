@@ -140,7 +140,7 @@ export default function MyQuizzes() {
                 <CardContent className="space-y-4">
                   <div>
                     <p className="text-sm text-foreground/85 mb-1">{t('myQuizzes.objective')}</p>
-                    <p className="text-sm">{quiz.objective}</p>
+                    <p className="text-sm text-primary">{quiz.objective}</p>
                   </div>
                   <div className="flex justify-between text-sm text-foreground/85">
                     <span>{quiz.total_questions} {t('myQuizzes.questions')}</span>
