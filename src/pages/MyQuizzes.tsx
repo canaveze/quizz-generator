@@ -9,6 +9,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { Loader2, Play, Plus, Trash2 } from 'lucide-react';
 import { AppHeader } from '@/components/AppHeader';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
+import { AIParticles } from '@/components/ui/ai-particles';
 interface Quiz {
   quiz_id: number;
   name: string;
@@ -85,6 +86,7 @@ export default function MyQuizzes() {
       </div>;
   }
   return <div className="min-h-screen bg-gradient-to-br from-[hsl(var(--fala-orange))]/10 to-[hsl(var(--fala-navy-light))]/10 relative">
+      <AIParticles />
       <AppHeader title={t('page.myQuizzes')} />
       <div className="max-w-4xl mx-auto p-6">
         <div className="flex justify-end mb-6">

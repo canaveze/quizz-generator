@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Plus, BookOpen } from "lucide-react";
 import { AppHeader } from "@/components/AppHeader";
+import { AIParticles } from "@/components/ui/ai-particles";
 
 export default function Index() {
   const navigate = useNavigate();
@@ -14,6 +15,7 @@ export default function Index() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[hsl(var(--fala-orange))]/10 to-[hsl(var(--fala-navy-light))]/10 relative">
+      <AIParticles />
       <AppHeader title={t('page.home')} />
       <div className="max-w-4xl mx-auto p-6">
         <div className="mb-8">

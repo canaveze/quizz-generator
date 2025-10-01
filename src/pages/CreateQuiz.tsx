@@ -12,6 +12,7 @@ import { toast } from '@/components/ui/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { Loader2, ArrowLeft } from 'lucide-react';
 import { AppHeader } from '@/components/AppHeader';
+import { AIParticles } from '@/components/ui/ai-particles';
 
 export default function CreateQuiz() {
   const [isLoading, setIsLoading] = useState(false);
@@ -67,6 +68,7 @@ export default function CreateQuiz() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[hsl(var(--fala-orange))]/10 to-[hsl(var(--fala-navy-light))]/10 relative">
+      <AIParticles />
       <AppHeader title={t('page.createQuiz')} />
       <div className="max-w-2xl mx-auto p-6">
         <div className="flex items-center gap-4 mb-6">

@@ -11,6 +11,7 @@ import { toast } from '@/components/ui/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { Loader2, CheckCircle, XCircle, ArrowLeft } from 'lucide-react';
 import { AppHeader } from '@/components/AppHeader';
+import { AIParticles } from '@/components/ui/ai-particles';
 
 interface Question {
   question_id: number;
@@ -184,6 +185,7 @@ export default function QuizPlay() {
   if (!quiz || questions.length === 0) {
     return (
       <div className="min-h-screen flex items-center justify-center relative">
+        <AIParticles />
         <Card className="text-center bg-background/80 backdrop-blur-sm border-border/50">
           <CardContent className="pt-6">
             <p>Quiz não encontrado ou sem perguntas.</p>
@@ -201,6 +203,7 @@ export default function QuizPlay() {
     
     return (
       <div className="min-h-screen bg-gradient-to-br from-[hsl(var(--fala-orange))]/10 to-[hsl(var(--fala-navy-light))]/10 p-4 relative">
+        <AIParticles />
         <div className="max-w-2xl mx-auto">
           <Card className="bg-background/80 backdrop-blur-sm border-border/50">
             <CardHeader className="text-center">
@@ -273,6 +276,7 @@ export default function QuizPlay() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[hsl(var(--fala-orange))]/10 to-[hsl(var(--fala-navy-light))]/10 relative">
+      <AIParticles />
       <AppHeader title={quiz?.name || t('page.playQuiz')} />
       <div className="max-w-2xl mx-auto p-6">
         <div className="flex items-center gap-4 mb-6">
