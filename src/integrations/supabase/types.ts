@@ -64,24 +64,35 @@ export type Database = {
       }
       Questions: {
         Row: {
+          correct_answer_id: number | null
           created_at: string
           question_id: number
           question_text: string | null
           quiz_id: string | null
         }
         Insert: {
+          correct_answer_id?: number | null
           created_at?: string
           question_id?: number
           question_text?: string | null
           quiz_id?: string | null
         }
         Update: {
+          correct_answer_id?: number | null
           created_at?: string
           question_id?: number
           question_text?: string | null
           quiz_id?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "fk_correct_answer"
+            columns: ["correct_answer_id"]
+            isOneToOne: false
+            referencedRelation: "Answers"
+            referencedColumns: ["answer_id"]
+          },
+        ]
       }
       Quizzes: {
         Row: {
