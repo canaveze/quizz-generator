@@ -64,24 +64,21 @@ export type Database = {
       }
       Questions: {
         Row: {
-          correct_answer_id: number | null
           created_at: string
           question_id: number
-          question_text: number | null
+          question_text: string | null
           quiz_id: string | null
         }
         Insert: {
-          correct_answer_id?: number | null
           created_at?: string
           question_id?: number
-          question_text?: number | null
+          question_text?: string | null
           quiz_id?: string | null
         }
         Update: {
-          correct_answer_id?: number | null
           created_at?: string
           question_id?: number
-          question_text?: number | null
+          question_text?: string | null
           quiz_id?: string | null
         }
         Relationships: []
@@ -199,10 +196,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      get_current_user_legacy_id: {
-        Args: Record<PropertyKey, never>
-        Returns: number
-      }
+      get_current_user_legacy_id: { Args: never; Returns: number }
     }
     Enums: {
       [_ in never]: never
