@@ -15,7 +15,7 @@ import { AppHeader } from '@/components/AppHeader';
 interface Question {
   question_id: number;
   question_text: string;
-  correct_answer_id: number;
+  correct_answer_id?: number;
   answers: Answer[];
 }
 
