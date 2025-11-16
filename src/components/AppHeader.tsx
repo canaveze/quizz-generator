@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { supabase } from '@/integrations/supabase/client';
+import { toast } from '@/hooks/use-toast';
 import falaLogo from '@/assets/FALA_logo.svg';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -31,10 +33,97 @@ export function AppHeader({ title }: AppHeaderProps) {
   const { user, signOut } = useAuth();
   const { t } = useLanguage();
   const navigate = useNavigate();
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
+  const [uploading, setUploading] = useState(false);
+
+  useEffect(() => {
+    if (user) {
+      loadUserAvatar();
+    }
+  }, [user]);
+
+  const loadUserAvatar = async () => {
+    if (!user) return;
+
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('user_legacy_id')
+      .eq('id', user.id)
+      .single();
+
+    if (profile?.user_legacy_id) {
+      const { data: userData } = await supabase
+        .from('Users')
+        .select('avatar_url')
+        .eq('user_id', profile.user_legacy_id)
+        .single();
+
+      if (userData?.avatar_url) {
+        setAvatarUrl(userData.avatar_url);
+      }
+    }
+  };
 
   const handleSignOut = async () => {
     await signOut();
     navigate('/auth');
+  };
+
+  const handlePhotoClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file || !user) return;
+
+    setUploading(true);
+    try {
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('user_legacy_id')
+        .eq('id', user.id)
+        .single();
+
+      if (!profile?.user_legacy_id) {
+        throw new Error('User profile not found');
+      }
+
+      const fileExt = file.name.split('.').pop();
+      const filePath = `${user.id}/${Date.now()}.${fileExt}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from('avatars')
+        .upload(filePath, file, { upsert: true });
+
+      if (uploadError) throw uploadError;
+
+      const { data: { publicUrl } } = supabase.storage
+        .from('avatars')
+        .getPublicUrl(filePath);
+
+      const { error: updateError } = await supabase
+        .from('Users')
+        .update({ avatar_url: publicUrl })
+        .eq('user_id', profile.user_legacy_id);
+
+      if (updateError) throw updateError;
+
+      setAvatarUrl(publicUrl);
+      toast({
+        title: t('header.photoUpdated') || 'Foto atualizada',
+        description: t('header.photoUpdatedDesc') || 'Sua foto de perfil foi atualizada com sucesso',
+      });
+    } catch (error: any) {
+      toast({
+        title: t('header.photoError') || 'Erro ao atualizar foto',
+        description: error.message,
+        variant: 'destructive',
+      });
+    } finally {
+      setUploading(false);
+    }
   };
 
   const getUserInitials = (name?: string) => {
@@ -61,7 +150,7 @@ export function AppHeader({ title }: AppHeaderProps) {
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="flex items-center gap-2 h-auto p-2">
               <Avatar className="h-8 w-8">
-                <AvatarImage src={user?.user_metadata?.avatar_url} />
+                <AvatarImage src={avatarUrl || user?.user_metadata?.avatar_url} />
                 <AvatarFallback className="bg-primary text-primary-foreground text-sm">
                   {getUserInitials(userName)}
                 </AvatarFallback>
@@ -74,7 +163,7 @@ export function AppHeader({ title }: AppHeaderProps) {
           <DropdownMenuContent align="end" className="w-56">
             <div className="flex items-center gap-2 p-2">
               <Avatar className="h-8 w-8">
-                <AvatarImage src={user?.user_metadata?.avatar_url} />
+                <AvatarImage src={avatarUrl || user?.user_metadata?.avatar_url} />
                 <AvatarFallback className="bg-primary text-primary-foreground text-sm">
                   {getUserInitials(userName)}
                 </AvatarFallback>
@@ -104,10 +193,17 @@ export function AppHeader({ title }: AppHeaderProps) {
             
             <DropdownMenuSeparator />
             
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={handlePhotoClick} disabled={uploading}>
               <Camera className="mr-2 h-4 w-4" />
-              {t('header.changePhoto')}
+              {uploading ? t('header.uploading') || 'Uploading...' : t('header.changePhoto')}
             </DropdownMenuItem>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              onChange={handleFileChange}
+              className="hidden"
+            />
             
             <DropdownMenuItem>
               <User className="mr-2 h-4 w-4" />
