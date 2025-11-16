@@ -57,7 +57,7 @@ export function AppHeader({ title }: AppHeaderProps) {
         .from('Users')
         .select('avatar_url')
         .eq('user_id', profile.user_legacy_id)
-        .single();
+        .maybeSingle();
 
       if (userData?.avatar_url) {
         setAvatarUrl(userData.avatar_url);
