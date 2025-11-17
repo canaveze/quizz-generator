@@ -169,14 +169,14 @@ export default function StudentRankings() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[hsl(var(--fala-orange))]/10 to-[hsl(var(--fala-navy-light))]/10">
-      <AppHeader title="Meus Alunos / My Students" />
+      <AppHeader title={t('rankings.title')} />
       <div className="max-w-6xl mx-auto p-6">
-        <h1 className="text-3xl font-bold mb-6">Rankings dos Alunos / Student Rankings</h1>
+        <h1 className="text-3xl font-bold mb-6">{t('rankings.pageTitle')}</h1>
 
         <Tabs defaultValue="overview" className="space-y-6">
           <TabsList>
-            <TabsTrigger value="overview">Visão Geral / Overview</TabsTrigger>
-            <TabsTrigger value="by-quiz">Por Quiz / By Quiz</TabsTrigger>
+            <TabsTrigger value="overview">{t('rankings.overview')}</TabsTrigger>
+            <TabsTrigger value="by-quiz">{t('rankings.byQuiz')}</TabsTrigger>
           </TabsList>
 
           <TabsContent value="overview" className="space-y-6">
@@ -185,12 +185,12 @@ export default function StudentRankings() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Trophy className="h-5 w-5 text-yellow-500" />
-                  Top 3 Alunos / Top 3 Students
+                  {t('rankings.top3')}
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 {topStudents.length === 0 ? (
-                  <p className="text-foreground/85">Nenhum resultado disponível / No results available</p>
+                  <p className="text-foreground/85">{t('rankings.noResults')}</p>
                 ) : (
                   <div className="space-y-4">
                     {topStudents.map((student, index) => (
@@ -207,7 +207,7 @@ export default function StudentRankings() {
                         <div className="text-right">
                           <p className="text-2xl font-bold">{student.average_score.toFixed(1)}</p>
                           <p className="text-sm text-foreground/85">
-                            {student.total_quizzes} {student.total_quizzes === 1 ? 'quiz' : 'quizzes'}
+                            {student.total_quizzes} {student.total_quizzes === 1 ? t('rankings.quiz') : t('rankings.quizzes')}
                           </p>
                         </div>
                       </div>
@@ -222,12 +222,12 @@ export default function StudentRankings() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <TrendingDown className="h-5 w-5 text-orange-500" />
-                  Alunos que Precisam de Apoio / Students Needing Support
+                  {t('rankings.needSupport')}
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 {bottomStudents.length === 0 ? (
-                  <p className="text-foreground/85">Nenhum resultado disponível / No results available</p>
+                  <p className="text-foreground/85">{t('rankings.noResults')}</p>
                 ) : (
                   <div className="space-y-4">
                     {bottomStudents.map((student) => (
@@ -242,7 +242,7 @@ export default function StudentRankings() {
                         <div className="text-right">
                           <p className="text-2xl font-bold">{student.average_score.toFixed(1)}</p>
                           <p className="text-sm text-foreground/85">
-                            {student.total_quizzes} {student.total_quizzes === 1 ? 'quiz' : 'quizzes'}
+                            {student.total_quizzes} {student.total_quizzes === 1 ? t('rankings.quiz') : t('rankings.quizzes')}
                           </p>
                         </div>
                       </div>
@@ -258,7 +258,7 @@ export default function StudentRankings() {
               <Card className="bg-background/80 backdrop-blur-sm border-border/50">
                 <CardContent className="py-12 text-center">
                   <p className="text-foreground/85">
-                    Nenhum ranking disponível / No rankings available
+                    {t('rankings.noRankings')}
                   </p>
                 </CardContent>
               </Card>
