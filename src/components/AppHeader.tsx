@@ -103,12 +103,27 @@ export function AppHeader({ title }: AppHeaderProps) {
         .from('avatars')
         .getPublicUrl(filePath);
 
-      const { error: updateError } = await supabase
-        .from('Users')
-        .update({ avatar_url: publicUrl })
-        .eq('user_id', profile.user_legacy_id);
+      console.log('Profile user_legacy_id:', profile.user_legacy_id);
+      console.log('Public URL gerada:', publicUrl);
 
-      if (updateError) throw updateError;
+      const { error: upsertError } = await supabase
+        .from('Users')
+        .upsert(
+          { 
+            user_id: profile.user_legacy_id,
+            avatar_url: publicUrl,
+            name: user.user_metadata?.name,
+            email: user.email
+          },
+          { 
+            onConflict: 'user_id',
+            ignoreDuplicates: false 
+          }
+        );
+
+      console.log('Resultado do upsert:', { error: upsertError });
+
+      if (upsertError) throw upsertError;
 
       setAvatarUrl(publicUrl);
       toast({
