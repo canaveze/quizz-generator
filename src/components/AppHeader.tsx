@@ -137,7 +137,7 @@ export function AppHeader({ title }: AppHeaderProps) {
             
             <DropdownMenuItem onClick={() => navigate(isAdmin ? '/student-rankings' : '/my-results')}>
               <User className="mr-2 h-4 w-4" />
-              {isAdmin ? 'Meus alunos / My Students' : 'Meus resultados / My Results'}
+              {isAdmin ? t('header.myStudents') : t('header.myResults')}
             </DropdownMenuItem>
             
             <DropdownMenuSeparator />
