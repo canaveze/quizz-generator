@@ -48,7 +48,7 @@ const translations = {
     'home.studentStep2.title': 'Responda as perguntas',
     'home.studentStep2.description': 'Complete cada quiz no seu próprio ritmo',
     'home.studentStep3.title': 'Acompanhe seu progresso',
-    'home.studentStep3.description': 'Veja suas pontuações e compare com outros alunos',
+    'home.studentStep3.description': 'Veja suas pontuações e acompanhe seu desempenho',
     
     // Auth page
     'auth.signin': 'Entrar',
@@ -188,7 +188,7 @@ const translations = {
     'home.studentStep2.title': 'Answer the questions',
     'home.studentStep2.description': 'Complete each quiz at your own pace',
     'home.studentStep3.title': 'Track your progress',
-    'home.studentStep3.description': 'See your scores and compare with other students',
+    'home.studentStep3.description': 'See your scores and track your performance',
     
     // Auth page
     'auth.signin': 'Sign In',
