@@ -9,6 +9,9 @@ export default defineConfig(({ mode }) => ({
   // Se o repo for username/repo-name, use: base: '/repo-name/'
   // Se for username.github.io, use: base: '/'
   base: '/quizz-generator/', // Ajustado para o repositório quizz-generator
+  build: {
+    outDir: 'docs', // Build vai para pasta docs/ para GitHub Pages
+  },
   server: {
     host: "::",
     port: 8080,
