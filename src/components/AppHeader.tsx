@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
+import { useIsAdmin } from '@/hooks/useIsAdmin';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { supabase } from '@/integrations/supabase/client';
 import falaLogo from '@/assets/FALA_logo.svg';
@@ -29,6 +30,7 @@ interface AppHeaderProps {
 
 export function AppHeader({ title }: AppHeaderProps) {
   const { user, signOut } = useAuth();
+  const { isAdmin } = useIsAdmin();
   const { t } = useLanguage();
   const navigate = useNavigate();
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
@@ -133,9 +135,9 @@ export function AppHeader({ title }: AppHeaderProps) {
             
             <DropdownMenuSeparator />
             
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={() => navigate(isAdmin ? '/student-rankings' : '/my-results')}>
               <User className="mr-2 h-4 w-4" />
-              {t('header.profile')}
+              {isAdmin ? 'Meus alunos / My Students' : 'Meus resultados / My Results'}
             </DropdownMenuItem>
             
             <DropdownMenuSeparator />
