@@ -43,6 +43,12 @@ const translations = {
     'home.step2.description': 'Nossa IA cria perguntas personalizadas automaticamente',
     'home.step3.title': 'Jogue e aprenda',
     'home.step3.description': 'Teste seus conhecimentos e veja seus resultados',
+    'home.studentStep1.title': 'Acesse os quizzes',
+    'home.studentStep1.description': 'Visualize os quizzes disponibilizados pelo seu professor',
+    'home.studentStep2.title': 'Responda as perguntas',
+    'home.studentStep2.description': 'Complete cada quiz no seu próprio ritmo',
+    'home.studentStep3.title': 'Acompanhe seu progresso',
+    'home.studentStep3.description': 'Veja suas pontuações e compare com outros alunos',
     
     // Auth page
     'auth.signin': 'Entrar',
@@ -177,6 +183,12 @@ const translations = {
     'home.step2.description': 'Our AI automatically creates personalized questions',
     'home.step3.title': 'Play and learn',
     'home.step3.description': 'Test your knowledge and see your results',
+    'home.studentStep1.title': 'Access quizzes',
+    'home.studentStep1.description': 'View quizzes made available by your teacher',
+    'home.studentStep2.title': 'Answer the questions',
+    'home.studentStep2.description': 'Complete each quiz at your own pace',
+    'home.studentStep3.title': 'Track your progress',
+    'home.studentStep3.description': 'See your scores and compare with other students',
     
     // Auth page
     'auth.signin': 'Sign In',
