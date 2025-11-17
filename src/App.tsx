@@ -12,6 +12,8 @@ import Auth from "./pages/Auth";
 import CreateQuiz from "./pages/CreateQuiz";
 import MyQuizzes from "./pages/MyQuizzes";
 import QuizPlay from "./pages/QuizPlay";
+import StudentRankings from "./pages/StudentRankings";
+import MyResults from "./pages/MyResults";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -44,6 +46,16 @@ const App = () => (
             <Route path="/quiz/:quizId" element={
               <AuthGuard>
                 <QuizPlay />
+              </AuthGuard>
+            } />
+            <Route path="/student-rankings" element={
+              <AuthGuard>
+                <StudentRankings />
+              </AuthGuard>
+            } />
+            <Route path="/my-results" element={
+              <AuthGuard>
+                <MyResults />
               </AuthGuard>
             } />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
