@@ -155,11 +155,6 @@ const translations = {
     'rankings.pending': 'Pendente',
     'rankings.searchQuizzes': 'Buscar quizzes por nome...',
     'rankings.noQuizzesFound': 'Nenhum quiz encontrado',
-    'rankings.sendReminder': 'Enviar Lembrete',
-    'rankings.reminderSent': 'Lembrete enviado',
-    'rankings.reminderSentDescription': 'Lembrete enviado para {name} com sucesso',
-    'rankings.reminderError': 'Erro ao enviar lembrete',
-    'rankings.reminderErrorDescription': 'Não foi possível enviar o lembrete. Tente novamente.',
   },
   en: {
     // Header
@@ -305,11 +300,6 @@ const translations = {
     'rankings.pending': 'Pending',
     'rankings.searchQuizzes': 'Search quizzes by name...',
     'rankings.noQuizzesFound': 'No quizzes found',
-    'rankings.sendReminder': 'Send Reminder',
-    'rankings.reminderSent': 'Reminder sent',
-    'rankings.reminderSentDescription': 'Reminder sent to {name} successfully',
-    'rankings.reminderError': 'Error sending reminder',
-    'rankings.reminderErrorDescription': 'Could not send the reminder. Please try again.',
   }
 };
 
