@@ -28,6 +28,7 @@ interface QuizRanking {
     score: number;
     total: number;
     percentage: number;
+    completed: boolean;
   }>;
 }
 
@@ -141,16 +142,37 @@ export default function StudentRankings() {
             score: result.score || 0,
             total: result.total || 0,
             percentage: result.total ? ((result.score || 0) / result.total) * 100 : 0,
+            completed: true,
           });
         }
       });
 
-      // Ordenar alunos dentro de cada quiz
+      // Adicionar alunos que não fizeram cada quiz
       quizRankingsMap.forEach((ranking) => {
-        ranking.students.sort((a, b) => b.percentage - a.percentage);
+        const completedUserIds = new Set(ranking.students.map(s => s.user_id));
+        
+        users?.forEach((user) => {
+          if (!completedUserIds.has(user.user_id)) {
+            ranking.students.push({
+              user_id: user.user_id,
+              name: user.name || user.email || 'Unknown',
+              score: 0,
+              total: 0,
+              percentage: 0,
+              completed: false,
+            });
+          }
+        });
+
+        // Ordenar: primeiro os que completaram (por porcentagem), depois os que não completaram
+        ranking.students.sort((a, b) => {
+          if (a.completed && !b.completed) return -1;
+          if (!a.completed && b.completed) return 1;
+          return b.percentage - a.percentage;
+        });
       });
 
-      setQuizRankings(Array.from(quizRankingsMap.values()).filter(r => r.students.length > 0));
+      setQuizRankings(Array.from(quizRankingsMap.values()));
     } catch (error) {
       console.error('Error fetching rankings:', error);
     } finally {
@@ -267,9 +289,11 @@ export default function StudentRankings() {
               </Card>
             ) : (
               quizRankings.map((quizRanking) => {
-                const bestStudent = quizRanking.students[0];
-                const worstStudent = quizRanking.students[quizRanking.students.length - 1];
-                const showBoth = quizRanking.students.length > 1 && bestStudent.user_id !== worstStudent.user_id;
+                const completedStudents = quizRanking.students.filter(s => s.completed);
+                const notCompletedStudents = quizRanking.students.filter(s => !s.completed);
+                const bestStudent = completedStudents[0];
+                const worstStudent = completedStudents.length > 0 ? completedStudents[completedStudents.length - 1] : null;
+                const showBoth = completedStudents.length > 1 && bestStudent && worstStudent && bestStudent.user_id !== worstStudent.user_id;
 
                 return (
                   <Card key={quizRanking.quiz_id} className="bg-background/80 backdrop-blur-sm border-border/50">
@@ -324,10 +348,35 @@ export default function StudentRankings() {
                           </div>
                         )}
 
-                        {!showBoth && quizRanking.students.length === 1 && (
+                        {completedStudents.length === 0 && (
+                          <p className="text-sm text-foreground/85 text-center py-2">
+                            {t('rankings.noCompletedYet')}
+                          </p>
+                        )}
+
+                        {completedStudents.length === 1 && !showBoth && (
                           <p className="text-sm text-foreground/85 text-center py-2">
                             {t('rankings.onlyOneStudent')}
                           </p>
+                        )}
+
+                        {/* Students who haven't completed */}
+                        {notCompletedStudents.length > 0 && (
+                          <div className="mt-6 pt-4 border-t border-border/50">
+                            <p className="text-sm text-foreground/85 font-medium mb-3">
+                              {t('rankings.notCompleted')} ({notCompletedStudents.length})
+                            </p>
+                            <div className="space-y-2">
+                              {notCompletedStudents.map((student) => (
+                                <div key={student.user_id} className="p-3 bg-muted/30 rounded-lg flex items-center justify-between">
+                                  <p className="text-sm">{student.name}</p>
+                                  <Badge variant="outline" className="text-xs">
+                                    {t('rankings.pending')}
+                                  </Badge>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
                         )}
                       </div>
                     </CardContent>
