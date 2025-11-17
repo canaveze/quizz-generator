@@ -214,6 +214,7 @@ export type Database = {
     }
     Functions: {
       get_current_user_legacy_id: { Args: never; Returns: number }
+      is_admin: { Args: never; Returns: boolean }
     }
     Enums: {
       [_ in never]: never
