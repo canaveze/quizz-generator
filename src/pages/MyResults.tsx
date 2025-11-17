@@ -127,9 +127,9 @@ export default function MyResults() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[hsl(var(--fala-orange))]/10 to-[hsl(var(--fala-navy-light))]/10">
-      <AppHeader title="Meus Resultados / My Results" />
+      <AppHeader title={t('myResults.title')} />
       <div className="max-w-6xl mx-auto p-6">
-        <h1 className="text-3xl font-bold mb-6">Meus Resultados / My Results</h1>
+        <h1 className="text-3xl font-bold mb-6">{t('myResults.title')}</h1>
 
         {/* Statistics Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
@@ -138,7 +138,7 @@ export default function MyResults() {
               <div className="flex items-center gap-3">
                 <Award className="h-8 w-8 text-primary" />
                 <div>
-                  <p className="text-sm text-foreground/85">Quizzes Realizados / Completed</p>
+                  <p className="text-sm text-foreground/85">{t('myResults.completed')}</p>
                   <p className="text-2xl font-bold">{stats.totalQuizzes}</p>
                 </div>
               </div>
@@ -150,7 +150,7 @@ export default function MyResults() {
               <div className="flex items-center gap-3">
                 <TrendingUp className="h-8 w-8 text-green-500" />
                 <div>
-                  <p className="text-sm text-foreground/85">Média Geral / Average</p>
+                  <p className="text-sm text-foreground/85">{t('myResults.average')}</p>
                   <p className="text-2xl font-bold">{stats.averageScore.toFixed(1)}%</p>
                 </div>
               </div>
@@ -162,7 +162,7 @@ export default function MyResults() {
               <div className="flex items-center gap-3">
                 <Award className="h-8 w-8 text-yellow-500" />
                 <div>
-                  <p className="text-sm text-foreground/85">Melhor Resultado / Best</p>
+                  <p className="text-sm text-foreground/85">{t('myResults.best')}</p>
                   <p className="text-2xl font-bold">{stats.bestScore.toFixed(1)}%</p>
                 </div>
               </div>
@@ -174,7 +174,7 @@ export default function MyResults() {
               <div className="flex items-center gap-3">
                 <Award className="h-8 w-8 text-blue-500" />
                 <div>
-                  <p className="text-sm text-foreground/85">Total de Acertos / Total Correct</p>
+                  <p className="text-sm text-foreground/85">{t('myResults.totalCorrect')}</p>
                   <p className="text-2xl font-bold">
                     {stats.totalCorrect}/{stats.totalQuestions}
                   </p>
@@ -189,14 +189,14 @@ export default function MyResults() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Calendar className="h-5 w-5" />
-              Histórico / History
+              {t('myResults.history')}
             </CardTitle>
           </CardHeader>
           <CardContent>
             {results.length === 0 ? (
               <div className="text-center py-12">
                 <p className="text-foreground/85">
-                  Você ainda não completou nenhum quiz / You haven't completed any quizzes yet
+                  {t('myResults.noQuizzes')}
                 </p>
               </div>
             ) : (
@@ -225,7 +225,7 @@ export default function MyResults() {
                       <Badge
                         variant={result.percentage >= 70 ? 'default' : result.percentage >= 50 ? 'secondary' : 'destructive'}
                       >
-                        {result.percentage >= 70 ? 'Excelente / Excellent' : result.percentage >= 50 ? 'Bom / Good' : 'Precisa Melhorar / Needs Improvement'}
+                        {result.percentage >= 70 ? t('myResults.excellent') : result.percentage >= 50 ? t('myResults.good') : t('myResults.needsImprovement')}
                       </Badge>
                     </div>
                   </div>

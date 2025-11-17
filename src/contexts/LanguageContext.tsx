@@ -115,6 +115,18 @@ const translations = {
     'common.save': 'Salvar',
     'common.delete': 'Excluir',
     'common.edit': 'Editar',
+    
+    // My Results page
+    'myResults.title': 'Meus Resultados',
+    'myResults.completed': 'Quizzes Realizados',
+    'myResults.average': 'Média Geral',
+    'myResults.best': 'Melhor Resultado',
+    'myResults.totalCorrect': 'Total de Acertos',
+    'myResults.history': 'Histórico',
+    'myResults.noQuizzes': 'Você ainda não completou nenhum quiz',
+    'myResults.excellent': 'Excelente',
+    'myResults.good': 'Bom',
+    'myResults.needsImprovement': 'Precisa Melhorar',
   },
   en: {
     // Header
@@ -220,6 +232,18 @@ const translations = {
     'common.save': 'Save',
     'common.delete': 'Delete',
     'common.edit': 'Edit',
+    
+    // My Results page
+    'myResults.title': 'My Results',
+    'myResults.completed': 'Completed',
+    'myResults.average': 'Average',
+    'myResults.best': 'Best',
+    'myResults.totalCorrect': 'Total Correct',
+    'myResults.history': 'History',
+    'myResults.noQuizzes': "You haven't completed any quizzes yet",
+    'myResults.excellent': 'Excellent',
+    'myResults.good': 'Good',
+    'myResults.needsImprovement': 'Needs Improvement',
   }
 };
 
