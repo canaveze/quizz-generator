@@ -5,10 +5,12 @@ import { useIsAdmin } from '@/hooks/useIsAdmin';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { supabase } from '@/integrations/supabase/client';
-import { Loader2, Trophy, TrendingDown, Award, Search } from 'lucide-react';
+import { Loader2, Trophy, TrendingDown, Award, Search, Mail } from 'lucide-react';
 import { Input } from '@/components/ui/input';
+import { toast } from '@/hooks/use-toast';
 import { AppHeader } from '@/components/AppHeader';
 
 interface StudentStats {
@@ -26,6 +28,7 @@ interface QuizRanking {
   students: Array<{
     user_id: number;
     name: string;
+    email: string;
     score: number;
     total: number;
     percentage: number;
@@ -39,6 +42,7 @@ export default function StudentRankings() {
   const [bottomStudents, setBottomStudents] = useState<StudentStats[]>([]);
   const [quizRankings, setQuizRankings] = useState<QuizRanking[]>([]);
   const [quizSearchTerm, setQuizSearchTerm] = useState('');
+  const [sendingReminder, setSendingReminder] = useState<Record<string, boolean>>({});
   const { user } = useAuth();
   const { isAdmin, loading: adminLoading } = useIsAdmin();
   const { t } = useLanguage();
@@ -122,7 +126,7 @@ export default function StudentRankings() {
       setTopStudents(sortedByAverage.slice(0, 3));
       setBottomStudents(sortedByAverage.slice(-3).reverse());
 
-      // Calcular rankings por quiz
+      // Calcular ranking por quiz
       const quizRankingsMap = new Map<number, QuizRanking>();
 
       quizzes?.forEach((quiz) => {
@@ -142,6 +146,7 @@ export default function StudentRankings() {
           ranking.students.push({
             user_id: result.user_id,
             name: user.name || user.email || 'Unknown',
+            email: user.email || '',
             score: result.score || 0,
             total: result.total || 0,
             percentage: result.total ? ((result.score || 0) / result.total) * 100 : 0,
@@ -159,6 +164,7 @@ export default function StudentRankings() {
             ranking.students.push({
               user_id: user.user_id,
               name: user.name || user.email || 'Unknown',
+              email: user.email || '',
               score: 0,
               total: 0,
               percentage: 0,
@@ -180,6 +186,38 @@ export default function StudentRankings() {
       console.error('Error fetching rankings:', error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleSendReminder = async (student: { user_id: number; name: string; email: string }, quizName: string, quizId: number) => {
+    const key = `${student.user_id}-${quizId}`;
+    setSendingReminder(prev => ({ ...prev, [key]: true }));
+
+    try {
+      const { error } = await supabase.functions.invoke('send-quiz-reminder', {
+        body: {
+          studentEmail: student.email,
+          studentName: student.name,
+          quizName: quizName,
+          quizId: quizId,
+        },
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: t('rankings.reminderSent'),
+        description: `${t('rankings.reminderSentDescription').replace('{name}', student.name)}`,
+      });
+    } catch (error) {
+      console.error('Error sending reminder:', error);
+      toast({
+        title: t('rankings.reminderError'),
+        description: t('rankings.reminderErrorDescription'),
+        variant: 'destructive',
+      });
+    } finally {
+      setSendingReminder(prev => ({ ...prev, [key]: false }));
     }
   };
 
@@ -386,14 +424,35 @@ export default function StudentRankings() {
                               {t('rankings.notCompleted')} ({notCompletedStudents.length})
                             </p>
                             <div className="space-y-2">
-                              {notCompletedStudents.map((student) => (
-                                <div key={student.user_id} className="p-3 bg-muted/30 rounded-lg flex items-center justify-between">
-                                  <p className="text-sm">{student.name}</p>
-                                  <Badge variant="outline" className="text-xs">
-                                    {t('rankings.pending')}
-                                  </Badge>
-                                </div>
-                              ))}
+                              {notCompletedStudents.map((student) => {
+                                const reminderKey = `${student.user_id}-${quizRanking.quiz_id}`;
+                                return (
+                                  <div key={student.user_id} className="p-3 bg-muted/30 rounded-lg flex items-center justify-between">
+                                    <p className="text-sm">{student.name}</p>
+                                    <div className="flex items-center gap-2">
+                                      <Badge variant="outline" className="text-xs">
+                                        {t('rankings.pending')}
+                                      </Badge>
+                                      <Button
+                                        size="sm"
+                                        variant="ghost"
+                                        onClick={() => handleSendReminder(student, quizRanking.quiz_name, quizRanking.quiz_id)}
+                                        disabled={sendingReminder[reminderKey]}
+                                        className="h-8 px-2"
+                                      >
+                                        {sendingReminder[reminderKey] ? (
+                                          <Loader2 className="h-4 w-4 animate-spin" />
+                                        ) : (
+                                          <>
+                                            <Mail className="h-4 w-4 mr-1" />
+                                            <span className="text-xs">{t('rankings.sendReminder')}</span>
+                                          </>
+                                        )}
+                                      </Button>
+                                    </div>
+                                  </div>
+                                );
+                              })}
                             </div>
                           </div>
                         )}
