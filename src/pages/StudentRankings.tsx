@@ -263,38 +263,74 @@ export default function StudentRankings() {
                 </CardContent>
               </Card>
             ) : (
-              quizRankings.map((quizRanking) => (
-                <Card key={quizRanking.quiz_id} className="bg-background/80 backdrop-blur-sm border-border/50">
-                  <CardHeader>
-                    <CardTitle>{quizRanking.quiz_name}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-3">
-                      {quizRanking.students.map((student, index) => (
-                        <div
-                          key={`${quizRanking.quiz_id}-${student.user_id}`}
-                          className="flex items-center justify-between p-3 bg-background/50 rounded-lg"
-                        >
-                          <div className="flex items-center gap-3">
-                            <Badge variant={index < 3 ? 'default' : 'outline'}>
-                              #{index + 1}
-                            </Badge>
-                            <span className="font-medium">{student.name}</span>
+              quizRankings.map((quizRanking) => {
+                const bestStudent = quizRanking.students[0];
+                const worstStudent = quizRanking.students[quizRanking.students.length - 1];
+                const showBoth = quizRanking.students.length > 1 && bestStudent.user_id !== worstStudent.user_id;
+
+                return (
+                  <Card key={quizRanking.quiz_id} className="bg-background/80 backdrop-blur-sm border-border/50">
+                    <CardHeader>
+                      <CardTitle>{quizRanking.quiz_name}</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-4">
+                        {/* Best Student */}
+                        {bestStudent && (
+                          <div className="p-4 bg-primary/5 rounded-lg">
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-center gap-3">
+                                <Trophy className="h-6 w-6 text-yellow-500" />
+                                <div>
+                                  <p className="text-sm text-foreground/85 mb-1">{t('rankings.bestStudent')}</p>
+                                  <p className="font-semibold">{bestStudent.name}</p>
+                                </div>
+                              </div>
+                              <div className="text-right">
+                                <p className="text-2xl font-bold">
+                                  {bestStudent.score} / {bestStudent.total}
+                                </p>
+                                <p className="text-sm text-foreground/85">
+                                  {bestStudent.percentage.toFixed(1)}%
+                                </p>
+                              </div>
+                            </div>
                           </div>
-                          <div className="text-right">
-                            <p className="font-semibold">
-                              {student.score} / {student.total}
-                            </p>
-                            <p className="text-sm text-foreground/85">
-                              {student.percentage.toFixed(1)}%
-                            </p>
+                        )}
+
+                        {/* Worst Student */}
+                        {showBoth && worstStudent && (
+                          <div className="p-4 bg-orange-500/5 rounded-lg">
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-center gap-3">
+                                <TrendingDown className="h-6 w-6 text-orange-500" />
+                                <div>
+                                  <p className="text-sm text-foreground/85 mb-1">{t('rankings.worstStudent')}</p>
+                                  <p className="font-semibold">{worstStudent.name}</p>
+                                </div>
+                              </div>
+                              <div className="text-right">
+                                <p className="text-2xl font-bold">
+                                  {worstStudent.score} / {worstStudent.total}
+                                </p>
+                                <p className="text-sm text-foreground/85">
+                                  {worstStudent.percentage.toFixed(1)}%
+                                </p>
+                              </div>
+                            </div>
                           </div>
-                        </div>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-              ))
+                        )}
+
+                        {!showBoth && quizRanking.students.length === 1 && (
+                          <p className="text-sm text-foreground/85 text-center py-2">
+                            {t('rankings.onlyOneStudent')}
+                          </p>
+                        )}
+                      </div>
+                    </CardContent>
+                  </Card>
+                );
+              })
             )}
           </TabsContent>
         </Tabs>
