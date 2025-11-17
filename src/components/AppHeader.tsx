@@ -123,10 +123,12 @@ export function AppHeader({ title }: AppHeaderProps) {
               {t('header.home')}
             </DropdownMenuItem>
             
-            <DropdownMenuItem onClick={() => navigate('/create-quiz')}>
-              <Plus className="mr-2 h-4 w-4" />
-              {t('header.createQuiz')}
-            </DropdownMenuItem>
+            {isAdmin && (
+              <DropdownMenuItem onClick={() => navigate('/create-quiz')}>
+                <Plus className="mr-2 h-4 w-4" />
+                {t('header.createQuiz')}
+              </DropdownMenuItem>
+            )}
             
             <DropdownMenuItem onClick={() => navigate('/my-quizzes')}>
               <FileText className="mr-2 h-4 w-4" />
