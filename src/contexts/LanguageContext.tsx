@@ -18,6 +18,8 @@ const translations = {
     'header.myQuizzes': 'Meus Quizzes',
     'header.changePhoto': 'Alterar Foto',
     'header.profile': 'Perfil',
+    'header.myStudents': 'Meus alunos',
+    'header.myResults': 'Meus resultados',
     'header.logout': 'Sair',
     
     // Pages
@@ -135,6 +137,8 @@ const translations = {
     'header.myQuizzes': 'My Quizzes',
     'header.changePhoto': 'Change Photo',
     'header.profile': 'Profile',
+    'header.myStudents': 'My Students',
+    'header.myResults': 'My Results',
     'header.logout': 'Logout',
     
     // Pages
