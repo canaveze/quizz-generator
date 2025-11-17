@@ -1,9 +1,8 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { supabase } from '@/integrations/supabase/client';
-import { toast } from '@/hooks/use-toast';
 import falaLogo from '@/assets/FALA_logo.svg';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -18,7 +17,6 @@ import {
 import { 
   User, 
   LogOut, 
-  Camera, 
   Home, 
   Plus, 
   FileText,
@@ -33,9 +31,7 @@ export function AppHeader({ title }: AppHeaderProps) {
   const { user, signOut } = useAuth();
   const { t } = useLanguage();
   const navigate = useNavigate();
-  const fileInputRef = useRef<HTMLInputElement>(null);
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
-  const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
     if (user) {
@@ -68,77 +64,6 @@ export function AppHeader({ title }: AppHeaderProps) {
   const handleSignOut = async () => {
     await signOut();
     navigate('/auth');
-  };
-
-  const handlePhotoClick = () => {
-    fileInputRef.current?.click();
-  };
-
-  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (!file || !user) return;
-
-    setUploading(true);
-    try {
-      const { data: profile } = await supabase
-        .from('profiles')
-        .select('user_legacy_id')
-        .eq('id', user.id)
-        .single();
-
-      if (!profile?.user_legacy_id) {
-        throw new Error('User profile not found');
-      }
-
-      const fileExt = file.name.split('.').pop();
-      const filePath = `${user.id}/${Date.now()}.${fileExt}`;
-
-      const { error: uploadError } = await supabase.storage
-        .from('avatars')
-        .upload(filePath, file, { upsert: true });
-
-      if (uploadError) throw uploadError;
-
-      const { data: { publicUrl } } = supabase.storage
-        .from('avatars')
-        .getPublicUrl(filePath);
-
-      console.log('Profile user_legacy_id:', profile.user_legacy_id);
-      console.log('Public URL gerada:', publicUrl);
-
-      const { error: upsertError } = await supabase
-        .from('Users')
-        .upsert(
-          { 
-            user_id: profile.user_legacy_id,
-            avatar_url: publicUrl,
-            name: user.user_metadata?.name,
-            email: user.email
-          },
-          { 
-            onConflict: 'user_id',
-            ignoreDuplicates: false 
-          }
-        );
-
-      console.log('Resultado do upsert:', { error: upsertError });
-
-      if (upsertError) throw upsertError;
-
-      setAvatarUrl(publicUrl);
-      toast({
-        title: t('header.photoUpdated') || 'Foto atualizada',
-        description: t('header.photoUpdatedDesc') || 'Sua foto de perfil foi atualizada com sucesso',
-      });
-    } catch (error: any) {
-      toast({
-        title: t('header.photoError') || 'Erro ao atualizar foto',
-        description: error.message,
-        variant: 'destructive',
-      });
-    } finally {
-      setUploading(false);
-    }
   };
 
   const getUserInitials = (name?: string) => {
@@ -207,18 +132,6 @@ export function AppHeader({ title }: AppHeaderProps) {
             </DropdownMenuItem>
             
             <DropdownMenuSeparator />
-            
-            <DropdownMenuItem onClick={handlePhotoClick} disabled={uploading}>
-              <Camera className="mr-2 h-4 w-4" />
-              {uploading ? t('header.uploading') || 'Uploading...' : t('header.changePhoto')}
-            </DropdownMenuItem>
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept="image/*"
-              onChange={handleFileChange}
-              className="hidden"
-            />
             
             <DropdownMenuItem>
               <User className="mr-2 h-4 w-4" />
