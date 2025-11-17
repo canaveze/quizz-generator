@@ -7,7 +7,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { supabase } from '@/integrations/supabase/client';
-import { Loader2, Trophy, TrendingDown, Award } from 'lucide-react';
+import { Loader2, Trophy, TrendingDown, Award, Search } from 'lucide-react';
+import { Input } from '@/components/ui/input';
 import { AppHeader } from '@/components/AppHeader';
 
 interface StudentStats {
@@ -37,6 +38,7 @@ export default function StudentRankings() {
   const [topStudents, setTopStudents] = useState<StudentStats[]>([]);
   const [bottomStudents, setBottomStudents] = useState<StudentStats[]>([]);
   const [quizRankings, setQuizRankings] = useState<QuizRanking[]>([]);
+  const [quizSearchTerm, setQuizSearchTerm] = useState('');
   const { user } = useAuth();
   const { isAdmin, loading: adminLoading } = useIsAdmin();
   const { t } = useLanguage();
@@ -279,16 +281,32 @@ export default function StudentRankings() {
           </TabsContent>
 
           <TabsContent value="by-quiz" className="space-y-6">
-            {quizRankings.length === 0 ? (
+            {/* Search Bar */}
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input
+                type="text"
+                placeholder={t('rankings.searchQuizzes')}
+                value={quizSearchTerm}
+                onChange={(e) => setQuizSearchTerm(e.target.value)}
+                className="pl-10"
+              />
+            </div>
+
+            {quizRankings.filter(q => 
+              q.quiz_name.toLowerCase().includes(quizSearchTerm.toLowerCase())
+            ).length === 0 ? (
               <Card className="bg-background/80 backdrop-blur-sm border-border/50">
                 <CardContent className="py-12 text-center">
                   <p className="text-foreground/85">
-                    {t('rankings.noRankings')}
+                    {quizSearchTerm ? t('rankings.noQuizzesFound') : t('rankings.noRankings')}
                   </p>
                 </CardContent>
               </Card>
             ) : (
-              quizRankings.map((quizRanking) => {
+              quizRankings
+                .filter(q => q.quiz_name.toLowerCase().includes(quizSearchTerm.toLowerCase()))
+                .map((quizRanking) => {
                 const completedStudents = quizRanking.students.filter(s => s.completed);
                 const notCompletedStudents = quizRanking.students.filter(s => !s.completed);
                 const bestStudent = completedStudents[0];
