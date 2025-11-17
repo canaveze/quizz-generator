@@ -70,7 +70,8 @@ export default function StudentRankings() {
       // Buscar informações dos usuários
       const { data: users, error: usersError } = await supabase
         .from('Users')
-        .select('user_id, name, email, user_type');
+        .select('user_id, name, email, user_type')
+        .eq('user_type', 'aluno');
 
       if (usersError) throw usersError;
 
