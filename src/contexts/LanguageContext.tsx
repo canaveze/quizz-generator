@@ -129,6 +129,18 @@ const translations = {
     'myResults.excellent': 'Excelente',
     'myResults.good': 'Bom',
     'myResults.needsImprovement': 'Precisa Melhorar',
+    
+    // Student Rankings page
+    'rankings.title': 'Meus Alunos',
+    'rankings.pageTitle': 'Rankings dos Alunos',
+    'rankings.overview': 'Visão Geral',
+    'rankings.byQuiz': 'Por Quiz',
+    'rankings.top3': 'Top 3 Alunos',
+    'rankings.needSupport': 'Alunos que Precisam de Apoio',
+    'rankings.noResults': 'Nenhum resultado disponível',
+    'rankings.noRankings': 'Nenhum ranking disponível',
+    'rankings.quiz': 'quiz',
+    'rankings.quizzes': 'quizzes',
   },
   en: {
     // Header
@@ -248,6 +260,18 @@ const translations = {
     'myResults.excellent': 'Excellent',
     'myResults.good': 'Good',
     'myResults.needsImprovement': 'Needs Improvement',
+    
+    // Student Rankings page
+    'rankings.title': 'My Students',
+    'rankings.pageTitle': 'Student Rankings',
+    'rankings.overview': 'Overview',
+    'rankings.byQuiz': 'By Quiz',
+    'rankings.top3': 'Top 3 Students',
+    'rankings.needSupport': 'Students Needing Support',
+    'rankings.noResults': 'No results available',
+    'rankings.noRankings': 'No rankings available',
+    'rankings.quiz': 'quiz',
+    'rankings.quizzes': 'quizzes',
   }
 };
 
