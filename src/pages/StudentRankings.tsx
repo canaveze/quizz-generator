@@ -70,8 +70,7 @@ export default function StudentRankings() {
       // Buscar informações dos usuários
       const { data: users, error: usersError } = await supabase
         .from('Users')
-        .select('user_id, name, email, user_type')
-        .neq('user_type', 'adm');
+        .select('user_id, name, email, user_type');
 
       if (usersError) throw usersError;
 
@@ -102,10 +101,13 @@ export default function StudentRankings() {
 
         const stats = studentStatsMap.get(result.user_id)!;
         stats.total_quizzes += 1;
-        stats.total_score += result.score || 0;
+        
+        // Calcular porcentagem para cada resultado
+        const percentage = result.total ? ((result.score || 0) / result.total) * 100 : 0;
+        stats.total_score += percentage;
       });
 
-      // Calcular média e ordenar
+      // Calcular média percentual
       const studentStats = Array.from(studentStatsMap.values()).map(stats => ({
         ...stats,
         average_score: stats.total_quizzes > 0 ? stats.total_score / stats.total_quizzes : 0,
@@ -119,7 +121,7 @@ export default function StudentRankings() {
       const quizRankingsMap = new Map<number, QuizRanking>();
 
       quizzes?.forEach((quiz) => {
-        quizRankingsMap.set(quiz.quiz_id, {
+        quizRankingsMap.set(Number(quiz.quiz_id), {
           quiz_id: quiz.quiz_id,
           quiz_name: quiz.name || 'Unnamed Quiz',
           students: [],
@@ -130,7 +132,7 @@ export default function StudentRankings() {
         const user = users?.find(u => u.user_id === result.user_id);
         if (!user || user.user_type === 'adm') return;
 
-        const ranking = quizRankingsMap.get(result.quiz_id);
+        const ranking = quizRankingsMap.get(Number(result.quiz_id));
         if (ranking) {
           ranking.students.push({
             user_id: result.user_id,
