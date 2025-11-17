@@ -81,7 +81,8 @@ export default function StudentRankings() {
       // Buscar informações dos quizzes
       const { data: quizzes, error: quizzesError } = await supabase
         .from('Quizzes')
-        .select('quiz_id, name');
+        .select('quiz_id, name')
+        .eq('status', 'active');
 
       if (quizzesError) throw quizzesError;
 
