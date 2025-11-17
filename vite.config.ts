@@ -8,7 +8,7 @@ export default defineConfig(({ mode }) => ({
   // IMPORTANTE: Ajuste o base path com o nome do seu repositório GitHub
   // Se o repo for username/repo-name, use: base: '/repo-name/'
   // Se for username.github.io, use: base: '/'
-  base: '/', // Ajustar conforme necessário
+  base: '/quizz-generator/', // Ajustado para o repositório quizz-generator
   server: {
     host: "::",
     port: 8080,
