@@ -141,6 +141,9 @@ const translations = {
     'rankings.noRankings': 'Nenhum ranking disponível',
     'rankings.quiz': 'quiz',
     'rankings.quizzes': 'quizzes',
+    'rankings.bestStudent': 'Melhor Aluno',
+    'rankings.worstStudent': 'Aluno com Mais Dificuldade',
+    'rankings.onlyOneStudent': 'Apenas um aluno fez este quiz',
   },
   en: {
     // Header
@@ -272,6 +275,9 @@ const translations = {
     'rankings.noRankings': 'No rankings available',
     'rankings.quiz': 'quiz',
     'rankings.quizzes': 'quizzes',
+    'rankings.bestStudent': 'Best Student',
+    'rankings.worstStudent': 'Student with Most Difficulty',
+    'rankings.onlyOneStudent': 'Only one student took this quiz',
   }
 };
 
