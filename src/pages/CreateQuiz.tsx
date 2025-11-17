@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
+import { useIsAdmin } from '@/hooks/useIsAdmin';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -16,8 +17,20 @@ import { AppHeader } from '@/components/AppHeader';
 export default function CreateQuiz() {
   const [isLoading, setIsLoading] = useState(false);
   const { user } = useAuth();
+  const { isAdmin, loading: adminLoading } = useIsAdmin();
   const { t } = useLanguage();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!adminLoading && !isAdmin) {
+      toast({
+        title: t('common.error'),
+        description: 'Apenas administradores podem criar quizzes / Only administrators can create quizzes',
+        variant: "destructive",
+      });
+      navigate('/');
+    }
+  }, [isAdmin, adminLoading, navigate, t]);
 
   const [formData, setFormData] = useState({
     name: '',
@@ -64,6 +77,18 @@ export default function CreateQuiz() {
       setIsLoading(false);
     }
   };
+
+  if (adminLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin" />
+      </div>
+    );
+  }
+
+  if (!isAdmin) {
+    return null;
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[hsl(var(--fala-orange))]/10 to-[hsl(var(--fala-navy-light))]/10 relative">

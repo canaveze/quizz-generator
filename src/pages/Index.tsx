@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
+import { useIsAdmin } from "@/hooks/useIsAdmin";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -10,6 +11,7 @@ import { AppHeader } from "@/components/AppHeader";
 export default function Index() {
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { isAdmin } = useIsAdmin();
   const { t } = useLanguage();
 
   return (
@@ -22,25 +24,27 @@ export default function Index() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <Card className="hover:shadow-lg transition-shadow cursor-pointer bg-background/80 backdrop-blur-sm border-border/50" onClick={() => navigate('/create-quiz')}>
-            <CardHeader>
-              <div className="flex items-center gap-3">
-                <Plus className="h-8 w-8 text-primary" />
-                <div>
-                  <CardTitle>{t('home.createQuiz.title')}</CardTitle>
-                  <CardDescription className="text-foreground/85">
-                    {t('home.createQuiz.description')}
-                  </CardDescription>
+        <div className={`grid grid-cols-1 ${isAdmin ? 'md:grid-cols-2' : ''} gap-6`}>
+          {isAdmin && (
+            <Card className="hover:shadow-lg transition-shadow cursor-pointer bg-background/80 backdrop-blur-sm border-border/50" onClick={() => navigate('/create-quiz')}>
+              <CardHeader>
+                <div className="flex items-center gap-3">
+                  <Plus className="h-8 w-8 text-primary" />
+                  <div>
+                    <CardTitle>{t('home.createQuiz.title')}</CardTitle>
+                    <CardDescription className="text-foreground/85">
+                      {t('home.createQuiz.description')}
+                    </CardDescription>
+                  </div>
                 </div>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-foreground/85">
-                {t('home.createQuiz.content')}
-              </p>
-            </CardContent>
-          </Card>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-foreground/85">
+                  {t('home.createQuiz.content')}
+                </p>
+              </CardContent>
+            </Card>
+          )}
 
           <Card className="hover:shadow-lg transition-shadow cursor-pointer bg-background/80 backdrop-blur-sm border-border/50" onClick={() => navigate('/my-quizzes')}>
             <CardHeader>

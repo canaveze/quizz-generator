@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
+import { useIsAdmin } from '@/hooks/useIsAdmin';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -16,12 +17,15 @@ interface Quiz {
   objective: string;
   total_questions: number;
   created_at: string;
+  user_id: number;
 }
 export default function MyQuizzes() {
   const [quizzes, setQuizzes] = useState<Quiz[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
+  const [userLegacyId, setUserLegacyId] = useState<number | null>(null);
   const { user } = useAuth();
+  const { isAdmin } = useIsAdmin();
   const { t } = useLanguage();
   const navigate = useNavigate();
 
@@ -36,6 +40,22 @@ export default function MyQuizzes() {
       quiz.objective.toLowerCase().includes(query)
     );
   }, [quizzes, searchQuery]);
+  useEffect(() => {
+    async function getUserLegacyId() {
+      if (!user) return;
+      
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('user_legacy_id')
+        .eq('id', user.id)
+        .single();
+      
+      setUserLegacyId(profile?.user_legacy_id || null);
+    }
+    
+    getUserLegacyId();
+  }, [user]);
+
   const fetchQuizzes = async () => {
     try {
       const {
@@ -151,8 +171,9 @@ export default function MyQuizzes() {
                       <Play className="mr-2 h-4 w-4" />
                       {t('myQuizzes.play')}
                     </Button>
-                    <AlertDialog>
-                      <AlertDialogTrigger asChild>
+                    {isAdmin && userLegacyId === quiz.user_id && (
+                      <AlertDialog>
+                        <AlertDialogTrigger asChild>
                         <Button variant="outline" size="icon" className="text-destructive hover:text-destructive">
                           <Trash2 className="h-4 w-4" />
                         </Button>
@@ -172,6 +193,7 @@ export default function MyQuizzes() {
                         </AlertDialogFooter>
                       </AlertDialogContent>
                     </AlertDialog>
+                    )}
                   </div>
                 </CardContent>
               </Card>)}
